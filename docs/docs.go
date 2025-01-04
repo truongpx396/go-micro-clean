@@ -111,19 +111,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/models.ItemIdRead"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -155,19 +155,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/models.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -206,25 +212,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/models.Item"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -334,6 +340,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "common.AppError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
         "enums.ItemType": {
             "type": "integer",
             "enum": [
@@ -384,14 +407,36 @@ const docTemplate = `{
             }
         },
         "models.Item": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "$ref": "#/definitions/models.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/definitions/enums.ItemType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         },
         "models.ItemCreate": {
             "type": "object",
-            "required": [
-                "name",
-                "type"
-            ],
             "properties": {
                 "image": {
                     "$ref": "#/definitions/models.Image"
@@ -404,6 +449,14 @@ const docTemplate = `{
                 },
                 "type": {
                     "$ref": "#/definitions/enums.ItemType"
+                }
+            }
+        },
+        "models.ItemIdRead": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },

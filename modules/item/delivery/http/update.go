@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"project/common"
 	"project/modules/item/domain/models"
 	"strconv"
 
@@ -16,40 +17,31 @@ import (
 // @Produce      json
 // @Param        id    path      int        true  "Item ID"
 // @Param        item  body      models.Item  true  "Updated item data"
-// @Success      200   {object}  models.APIResponse
-// @Failure      400   {object}  models.APIResponse
-// @Failure      404   {object}  models.APIResponse
-// @Failure      500   {object}  models.APIResponse
+// @Success      200   {object}  models.Item
+// @Failure      400   {object}  common.AppError
+// @Failure      404   {object}  common.AppError
+// @Failure      500   {object}  common.AppError
 // @Router       /items/{id} [put]
 func (h *itemHandler) UpdateItem(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid item ID",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 		return
 	}
 
 	var item models.Item
 	if err := c.ShouldBindJSON(&item); err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid request payload",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 		return
 	}
 
 	item.ID = uint(id)
 	if err := h.usecase.UpdateItem(&item); err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: "Failed to update item",
-		})
+		c.JSON(http.StatusInternalServerError, common.ErrCannotUpdateEntity(item.TableName(), err))
 		return
 	}
 
-	c.JSON(http.StatusOK, models.APIResponse{
-		Data:    item,
-		Message: "Item updated successfully",
-	})
+	c.JSON(http.StatusOK, item)
 }
 
 // PatchItem godoc

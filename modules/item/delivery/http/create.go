@@ -1,8 +1,8 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
+	"project/common"
 	"project/modules/item/domain/models"
 
 	"github.com/gin-gonic/gin"
@@ -15,23 +15,19 @@ import (
 // @Accept       json
 // @Produce      json
 // @Param        item  body      models.ItemCreate  true  "Item data"
-// @Success      201   {object}  models.APIResponse
-// @Failure      400   {object}  models.APIResponse
-// @Failure      500   {object}  models.APIResponse
+// @Success      201   {object}  models.ItemIdRead
+// @Failure      400   {object}  common.AppError
+// @Failure      500   {object}  common.AppError
 // @Router       /items [post]
 func (h *itemHandler) CreateItem(c *gin.Context) {
 	var item models.ItemCreate
 	if err := c.ShouldBindJSON(&item); err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: fmt.Sprintf("Invalid request payload: %v\n", err),
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 		return
 	}
 
 	if err := h.usecase.CreateItem(&item); err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: fmt.Sprintf("Failed to create item %v\n", err),
-		})
+		c.JSON(http.StatusInternalServerError, common.ErrCannotCreateEntity(item.TableName(), err))
 		return
 	}
 
