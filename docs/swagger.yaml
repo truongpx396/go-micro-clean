@@ -1,0 +1,292 @@
+basePath: /api/v1
+definitions:
+  enums.ItemType:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - Physical
+    - Digital
+  models.APIResponse:
+    properties:
+      data:
+        description: The main response data (can be list or single resource).
+      error:
+        description: Error message if any error occurs.
+        type: string
+      message:
+        description: Message for additional context (optional).
+        type: string
+      pagination:
+        allOf:
+        - $ref: '#/definitions/models.Pagination'
+        description: Pagination details (optional, for paginated responses).
+    type: object
+  models.Image:
+    properties:
+      height:
+        type: integer
+      url:
+        type: string
+      width:
+        type: integer
+    type: object
+  models.Item:
+    type: object
+  models.ItemCreate:
+    properties:
+      image:
+        $ref: '#/definitions/models.Image'
+      name:
+        type: string
+      status:
+        type: integer
+      type:
+        $ref: '#/definitions/enums.ItemType'
+    required:
+    - name
+    - type
+    type: object
+  models.ItemUpdate:
+    properties:
+      image:
+        $ref: '#/definitions/models.Image'
+      name:
+        type: string
+      type:
+        $ref: '#/definitions/enums.ItemType'
+    type: object
+  models.Pagination:
+    properties:
+      current_cursor:
+        type: integer
+      limit:
+        type: integer
+      next_cursor:
+        type: integer
+      total_items:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://www.example.com/support
+  description: This is a sample server for a project.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://example.com/terms/
+  title: Project API
+  version: "1.0"
+paths:
+  /items:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a paginated list of items
+      parameters:
+      - description: Cursor for pagination
+        in: query
+        name: cursor
+        type: integer
+      - description: Number of items to retrieve
+        in: query
+        name: limit
+        type: integer
+      - description: Item type
+        in: query
+        name: type
+        type: string
+      - description: Sort by field
+        in: query
+        name: sortBy
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: List items with cursor-based pagination
+      tags:
+      - Items
+    post:
+      consumes:
+      - application/json
+      description: Create a new item with name, type, and image data
+      parameters:
+      - description: Item data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/models.ItemCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Create a new item
+      tags:
+      - Items
+  /items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item resource by its ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Delete an item
+      tags:
+      - Items
+    get:
+      consumes:
+      - application/json
+      description: Get details of an item by its unique ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Retrieve an item by ID
+      tags:
+      - Items
+    patch:
+      consumes:
+      - application/json
+      description: Update specific fields of an item resource
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Fields to update
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/models.ItemUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Partially update an item
+      tags:
+      - Items
+    put:
+      consumes:
+      - application/json
+      description: Replace the entire item resource with new data
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated item data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIResponse'
+      summary: Update an item by ID
+      tags:
+      - Items
+swagger: "2.0"
+tags:
+- description: Operations about items
+  name: Items

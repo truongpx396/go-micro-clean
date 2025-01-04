@@ -14,7 +14,7 @@ func NewItemRepository(db *gorm.DB) *itemRepository {
 	return &itemRepository{db: db}
 }
 
-func (r *itemRepository) Create(item *models.Item) error {
+func (r *itemRepository) Create(item *models.ItemCreate) error {
 	return r.db.Create(item).Error
 }
 

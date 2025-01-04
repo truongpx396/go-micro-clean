@@ -9,7 +9,7 @@ import (
 )
 
 type ItemRepository interface {
-	Create(item *models.Item) error
+	Create(item *models.ItemCreate) error
 	GetByID(id uint) (*models.Item, error)
 	GetByName(name string) (*models.Item, error)
 	Update(item *models.Item) error
@@ -26,7 +26,7 @@ func NewItemUsecase(repo ItemRepository) *itemUsecase {
 }
 
 // CreateItem creates a new item with validation and uniqueness check.
-func (u *itemUsecase) CreateItem(item *models.Item) error {
+func (u *itemUsecase) CreateItem(item *models.ItemCreate) error {
 	// Validate item fields
 	if err := item.Validate(); err != nil {
 		return err
@@ -39,8 +39,7 @@ func (u *itemUsecase) CreateItem(item *models.Item) error {
 	}
 
 	// Set created and updated timestamps
-	item.CreatedAt = time.Now()
-	item.UpdatedAt = time.Now()
+	item.PrepareForInsert()
 
 	// Create the item
 	return u.repo.Create(item)

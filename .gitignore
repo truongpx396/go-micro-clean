@@ -23,3 +23,6 @@ vendor/
 
 # Go modules
 go.sum
+
+# Local data
+components/

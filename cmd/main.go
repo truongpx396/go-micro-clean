@@ -11,6 +11,26 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title           Project API
+// @version         1.0
+// @description     This is a sample server for a project.
+// @termsOfService  http://example.com/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.example.com/support
+// @contact.email  support@example.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @tag.name  Items
+// @tag.description  Operations about items
+
+// swag init -g cmd/main.go -o docs
+
 func main() {
 	// Initialize database
 	db := config.SetupDatabase()

@@ -1,0 +1,15 @@
+{
+    "Servers": {
+      "1": {
+        "Name": "Local PostgreSQL",
+        "Group": "Servers",
+        "Host": "dev-postgresql",
+        "Port": 5432,
+        "MaintenanceDB": "dev_database",
+        "Username": "dev-user",
+        "Password": "dev-password",
+        "SSLMode": "prefer",
+        "Favorite": true
+      }
+    }
+  }

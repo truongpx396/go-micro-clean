@@ -33,7 +33,7 @@ func (r *itemRepository) List(pagination *models.Pagination, filters ...func(*go
 	}
 
 	if len(items) > 0 {
-		nextCursor := items[len(items)-1].ID
+		nextCursor := items[len(items)-1].Id
 		pagination.NextCursor = &nextCursor
 	}
 

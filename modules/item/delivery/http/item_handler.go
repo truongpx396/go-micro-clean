@@ -11,7 +11,7 @@ import (
 )
 
 type ItemUsecase interface {
-	CreateItem(item *models.Item) error
+	CreateItem(item *models.ItemCreate) error
 	GetItemByID(id uint) (*models.Item, error)
 	UpdateItem(item *models.Item) error
 	DeleteItem(id uint) error
@@ -25,39 +25,6 @@ type itemHandler struct {
 
 func NewItemHandler(usecase ItemUsecase) *itemHandler {
 	return &itemHandler{usecase: usecase}
-}
-
-// CreateItem godoc
-// @Summary      Create a new item
-// @Description  Create a new item with name, type, and image data
-// @Tags         Items
-// @Accept       json
-// @Produce      json
-// @Param        item  body      models.Item  true  "Item data"
-// @Success      201   {object}  models.APIResponse
-// @Failure      400   {object}  models.APIResponse
-// @Failure      500   {object}  models.APIResponse
-// @Router       /items [post]
-func (h *itemHandler) CreateItem(c *gin.Context) {
-	var item models.Item
-	if err := c.ShouldBindJSON(&item); err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid request payload",
-		})
-		return
-	}
-
-	if err := h.usecase.CreateItem(&item); err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: "Failed to create item",
-		})
-		return
-	}
-
-	c.JSON(http.StatusCreated, models.APIResponse{
-		Data:    item,
-		Message: "Item created successfully",
-	})
 }
 
 // GetItemByID godoc
