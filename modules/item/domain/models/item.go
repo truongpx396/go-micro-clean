@@ -15,6 +15,15 @@ type Item struct {
 	Image Image          `json:"image" gorm:"type:jsonb"`
 }
 
+func (Item) TableName() string {
+	return "items"
+}
+
+// Validate validates the Item fields.
+func (item *Item) Validate() error {
+	return validateItemFields(item.Name, item.Type)
+}
+
 // ItemCreate represents the request payload for creating an item.
 type ItemCreate struct {
 	common.SQLModelCreate
@@ -24,12 +33,7 @@ type ItemCreate struct {
 }
 
 func (ItemCreate) TableName() string {
-	return "items"
-}
-
-// Validate validates the Item fields.
-func (item *Item) Validate() error {
-	return validateItemFields(item.Name, item.Type)
+	return Item{}.TableName()
 }
 
 // Validate validates the ItemCreate fields.
@@ -62,6 +66,10 @@ type ItemUpdate struct {
 	Name  *string         `json:"name,omitempty"`
 	Type  *enums.ItemType `json:"type,omitempty"`
 	Image *Image          `json:"image,omitempty"`
+}
+
+func (ItemUpdate) TableName() string {
+	return Item{}.TableName()
 }
 
 type ItemDeleteResult struct {

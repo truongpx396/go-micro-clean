@@ -35,10 +35,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, models.APIResponse{
-		Data: models.ItemIdRead{
-			ID: item.Id,
-		},
-		Message: "Item created successfully",
+	c.JSON(http.StatusCreated, models.ItemIdRead{
+		ID: item.ID,
 	})
 }

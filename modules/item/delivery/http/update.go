@@ -38,7 +38,7 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 		return
 	}
 
-	item.Id = uint(id)
+	item.ID = uint(id)
 	if err := h.usecase.UpdateItem(&item); err != nil {
 		c.JSON(http.StatusInternalServerError, models.APIResponse{
 			Error: "Failed to update item",
