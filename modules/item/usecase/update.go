@@ -29,7 +29,7 @@ func (u *itemUsecase) UpdateItem(item *models.Item) error {
 	}
 
 	// Set updated timestamp
-	item.UpdatedAt = time.Now()
+	item.BeforeUpdate()
 
 	// Fully replace the item in the database with the item being passed through API
 	return u.repo.Update(item)
@@ -65,7 +65,8 @@ func (u *itemUsecase) PartiallyUpdateItem(id uint, updates models.ItemUpdate) (*
 	}
 
 	// Set updated timestamp
-	existingItem.UpdatedAt = time.Now()
+	now := time.Now()
+	existingItem.UpdatedAt = &now
 
 	// Update the existing item in the repository
 	if err := u.repo.Update(existingItem); err != nil {

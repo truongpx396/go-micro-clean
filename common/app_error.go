@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // {
@@ -20,6 +23,8 @@ import (
 // 	  "status": 404
 // 	}
 //   }
+
+var caser = cases.Title(language.English)
 
 type AppError struct {
 	Status  int    `json:"status"`
@@ -111,7 +116,7 @@ func ErrCannotCreateEntity(entity string, err error) *AppError {
 	return NewInternalServerError(
 		err,
 		fmt.Sprintf("Cannot Create %s", strings.ToLower(entity)),
-		fmt.Sprintf("ErrCannotCreate%s", entity),
+		fmt.Sprintf("ErrCannotCreate%s", caser.String(entity)),
 	)
 }
 
@@ -137,7 +142,7 @@ func ErrEntityNotFound(entity string, err error) *AppError {
 		err,
 		fmt.Sprintf("%s not found", strings.ToLower(entity)),
 		err.Error(),
-		fmt.Sprintf("Err%sNotFound", entity),
+		fmt.Sprintf("Err%sNotFound", caser.String(entity)),
 	)
 }
 
@@ -145,7 +150,7 @@ func ErrCannotUpdateEntity(entity string, err error) *AppError {
 	return NewInternalServerError(
 		err,
 		fmt.Sprintf("Cannot update %s", strings.ToLower(entity)),
-		fmt.Sprintf("ErrCannotUpdate%s", entity),
+		fmt.Sprintf("ErrCannotUpdate%s", caser.String(entity)),
 	)
 }
 
