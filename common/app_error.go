@@ -163,10 +163,10 @@ func ErrCannotListEntity(entity string, err error) *AppError {
 }
 
 func ErrCannotDeleteEntity(entity string, err error) *AppError {
-	return NewBadRequestError(
+	return NewInternalServerError(
 		err,
 		fmt.Sprintf("Cannot delete %s", strings.ToLower(entity)),
-		fmt.Sprintf("ErrCannotDelete%s", entity),
+		fmt.Sprintf("ErrCannotDelete%s", caser.String(entity)),
 	)
 }
 

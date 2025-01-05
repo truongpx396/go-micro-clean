@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"project/common"
 	"project/modules/item/domain/models"
 	"strconv"
 
@@ -16,27 +17,26 @@ import (
 // @Produce      json
 // @Param        id    path      int  true  "Item ID"
 // @Success      204   {object}  nil
-// @Failure      400   {object}  models.APIResponse
-// @Failure      404   {object}  models.APIResponse
-// @Failure      500   {object}  models.APIResponse
+// @Failure      400   {object}  common.AppError
+// @Failure      404   {object}  common.AppError
+// @Failure      500   {object}  common.AppError
 // @Router       /items/{id} [delete]
 func (h *itemHandler) DeleteItem(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid item ID",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+		return
+	}
+
+	if _, err := h.usecase.GetItemByID(uint(id)); err != nil {
+		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(models.Item{}.TableName(), err))
 		return
 	}
 
 	if err := h.usecase.DeleteItem(uint(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: "Failed to delete item",
-		})
+		c.JSON(http.StatusInternalServerError, common.ErrCannotDeleteEntity(models.Item{}.TableName(), err))
 		return
 	}
 
-	c.JSON(http.StatusOK, models.APIResponse{
-		Message: "Item deleted successfully",
-	})
+	c.JSON(http.StatusNoContent, nil)
 }

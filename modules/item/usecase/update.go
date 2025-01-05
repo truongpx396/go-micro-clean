@@ -9,10 +9,10 @@ import (
 
 // UpdateItem updates an existing item with validation and consistency checks.
 func (u *itemUsecase) UpdateItem(item *models.Item) error {
-	// Check if item exists
+	// Get the existing item
 	existingItem, err := u.repo.GetByID(item.ID)
 	if err != nil {
-		return errors.New("item not found")
+		return err
 	}
 
 	// Validate item fields

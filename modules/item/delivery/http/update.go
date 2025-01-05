@@ -35,6 +35,11 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 		return
 	}
 
+	if _, err := h.usecase.GetItemByID(uint(id)); err != nil {
+		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(models.Item{}.TableName(), err))
+		return
+	}
+
 	item.ID = uint(id)
 	if err := h.usecase.UpdateItem(&item); err != nil {
 		c.JSON(http.StatusInternalServerError, common.ErrCannotUpdateEntity(item.TableName(), err))
