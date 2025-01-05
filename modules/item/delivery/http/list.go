@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"project/common"
 	"project/modules/item/domain/enums"
 	"project/modules/item/domain/models"
 
@@ -18,16 +19,14 @@ import (
 // @Param        limit   query     int  false  "Number of items to retrieve"
 // @Param        type    query     string  false  "Item type"
 // @Param        sortBy  query     string  false  "Sort by field"
-// @Success      200     {object}  models.APIResponse
-// @Failure      400     {object}  models.APIResponse
-// @Failure      500     {object}  models.APIResponse
+// @Success      200     {object}  models.ItemListResponse
+// @Failure      400     {object}  common.AppError
+// @Failure      500     {object}  common.AppError
 // @Router       /items [get]
 func (h *itemHandler) ListItems(c *gin.Context) {
 	var pagination models.Pagination
 	if err := c.ShouldBindQuery(&pagination); err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid pagination parameters",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid pagination parameters"))
 		return
 	}
 
@@ -38,9 +37,7 @@ func (h *itemHandler) ListItems(c *gin.Context) {
 	if itemType != "" {
 		enumValue, err := enums.ParseItemType(itemType)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, models.APIResponse{
-				Error: "Invalid item type",
-			})
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid item type"))
 			return
 		}
 		itemTypeEnum = &enumValue
@@ -48,15 +45,13 @@ func (h *itemHandler) ListItems(c *gin.Context) {
 
 	items, err := h.usecase.ListItems(&pagination, itemTypeEnum, sortBy)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: "Failed to list items",
-		})
+		c.JSON(http.StatusInternalServerError, common.ErrCannotListEntity(models.Item{}.TableName(), err))
 		return
 	}
 
-	response := models.APIResponse{
+	response := models.ItemListResponse{
 		Data: items,
-		Pagination: &models.Pagination{
+		Paging: models.Pagination{
 			CurrentCursor: pagination.CurrentCursor,
 			NextCursor:    pagination.NextCursor,
 			Limit:         pagination.Limit,

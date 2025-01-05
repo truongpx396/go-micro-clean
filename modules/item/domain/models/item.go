@@ -72,6 +72,11 @@ func (ItemUpdate) TableName() string {
 	return Item{}.TableName()
 }
 
+type ItemListResponse struct {
+	Data   []Item     `json:"data"`   // The main response data (can be list or single resource).
+	Paging Pagination `json:"paging"` // Pagination details (optional, for paginated responses).
+}
+
 type ItemDeleteResult struct {
 	Success bool `json:"successful_deleted"`
 }

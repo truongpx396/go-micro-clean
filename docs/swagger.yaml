@@ -19,21 +19,6 @@ definitions:
     x-enum-varnames:
     - Physical
     - Digital
-  models.APIResponse:
-    properties:
-      data:
-        description: The main response data (can be list or single resource).
-      error:
-        description: Error message if any error occurs.
-        type: string
-      message:
-        description: Message for additional context (optional).
-        type: string
-      pagination:
-        allOf:
-        - $ref: '#/definitions/models.Pagination'
-        description: Pagination details (optional, for paginated responses).
-    type: object
   models.Image:
     properties:
       height:
@@ -77,6 +62,18 @@ definitions:
     properties:
       id:
         type: integer
+    type: object
+  models.ItemListResponse:
+    properties:
+      data:
+        description: The main response data (can be list or single resource).
+        items:
+          $ref: '#/definitions/models.Item'
+        type: array
+      paging:
+        allOf:
+        - $ref: '#/definitions/models.Pagination'
+        description: Pagination details (optional, for paginated responses).
     type: object
   models.ItemUpdate:
     properties:
@@ -140,15 +137,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/models.ItemListResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/common.AppError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/common.AppError'
       summary: List items with cursor-based pagination
       tags:
       - Items
@@ -266,19 +263,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/models.Item'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/common.AppError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/common.AppError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.APIResponse'
+            $ref: '#/definitions/common.AppError'
       summary: Partially update an item
       tags:
       - Items

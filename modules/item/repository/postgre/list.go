@@ -23,9 +23,9 @@ func (r *itemRepository) List(pagination *models.Pagination, filters ...func(*go
 	pagination.TotalItems = uint(totalItems)
 
 	// Apply cursor and limit
-	query = query.Order("id").Limit(pagination.Limit)
+	query = query.Order("id desc").Limit(pagination.Limit)
 	if pagination.CurrentCursor != nil && *pagination.CurrentCursor > 0 {
-		query = query.Where("id > ?", *pagination.CurrentCursor)
+		query = query.Where("id < ?", *pagination.CurrentCursor)
 	}
 
 	if err := query.Find(&items).Error; err != nil {

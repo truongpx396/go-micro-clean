@@ -12,6 +12,11 @@ func (u *itemUsecase) ListItems(pagination *models.Pagination, itemType *enums.I
 	// Apply filters
 	var filters []func(*gorm.DB) *gorm.DB
 
+	// Exclude soft-deleted items
+	filters = append(filters, func(db *gorm.DB) *gorm.DB {
+		return db.Where("deleted_at IS NULL")
+	})
+
 	if itemType != nil {
 		filters = append(filters, func(db *gorm.DB) *gorm.DB {
 			return db.Where("type = ?", *itemType)
@@ -28,7 +33,8 @@ func (u *itemUsecase) ListItems(pagination *models.Pagination, itemType *enums.I
 		for _, filter := range filters {
 			db = filter(db)
 		}
-		return db.Order(sortBy)
+		// return db.Order(sortBy)
+		return db
 	})
 	if err != nil {
 		return nil, err

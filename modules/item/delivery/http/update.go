@@ -57,38 +57,34 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 // @Produce      json
 // @Param        id    path      int         true  "Item ID"
 // @Param        item  body      models.ItemUpdate  true  "Fields to update"
-// @Success      200   {object}  models.APIResponse
-// @Failure      400   {object}  models.APIResponse
-// @Failure      404   {object}  models.APIResponse
-// @Failure      500   {object}  models.APIResponse
+// @Success      200   {object}  models.Item
+// @Failure      400   {object}  common.AppError
+// @Failure      404   {object}  common.AppError
+// @Failure      500   {object}  common.AppError
 // @Router       /items/{id} [patch]
 func (h *itemHandler) PatchItem(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid item ID",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid item ID"))
 		return
 	}
 
 	var updates models.ItemUpdate
 	if err := c.ShouldBindJSON(&updates); err != nil {
-		c.JSON(http.StatusBadRequest, models.APIResponse{
-			Error: "Invalid request payload",
-		})
+		c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid request payload"))
+		return
+	}
+
+	if _, err := h.usecase.GetItemByID(uint(id)); err != nil {
+		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(models.Item{}.TableName(), err))
 		return
 	}
 
 	item, err := h.usecase.PartiallyUpdateItem(uint(id), updates)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.APIResponse{
-			Error: "Failed to update item",
-		})
+		c.JSON(http.StatusInternalServerError, common.ErrCannotUpdateEntity(models.Item{}.TableName(), err))
 		return
 	}
 
-	c.JSON(http.StatusOK, models.APIResponse{
-		Data:    item,
-		Message: "Item updated successfully",
-	})
+	c.JSON(http.StatusOK, item)
 }

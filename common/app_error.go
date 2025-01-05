@@ -99,6 +99,10 @@ func ErrInvalidRequest(err error) *AppError {
 	return NewBadRequestResponse(err, "invalid request", err.Error(), "ErrInvalidRequest")
 }
 
+func ErrInvalidRequestWithMsg(err error, msg string) *AppError {
+	return NewBadRequestResponse(err, msg, err.Error(), "ErrInvalidRequest")
+}
+
 func ErrInternal(err error) *AppError {
 	return NewGeneralErrorResponse(http.StatusInternalServerError, err,
 		"something went wrong in the server", err.Error(), "ErrInternal")

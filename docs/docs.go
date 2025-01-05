@@ -67,19 +67,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/models.ItemListResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -314,25 +314,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/models.Item"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.APIResponse"
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -367,30 +367,6 @@ const docTemplate = `{
                 "Physical",
                 "Digital"
             ]
-        },
-        "models.APIResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "The main response data (can be list or single resource)."
-                },
-                "error": {
-                    "description": "Error message if any error occurs.",
-                    "type": "string"
-                },
-                "message": {
-                    "description": "Message for additional context (optional).",
-                    "type": "string"
-                },
-                "pagination": {
-                    "description": "Pagination details (optional, for paginated responses).",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.Pagination"
-                        }
-                    ]
-                }
-            }
         },
         "models.Image": {
             "type": "object",
@@ -457,6 +433,26 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.ItemListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "The main response data (can be list or single resource).",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Item"
+                    }
+                },
+                "paging": {
+                    "description": "Pagination details (optional, for paginated responses).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Pagination"
+                        }
+                    ]
                 }
             }
         },

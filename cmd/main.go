@@ -35,6 +35,8 @@ func main() {
 	// Initialize database
 	db := config.SetupDatabase()
 
+	db = db.Debug()
+
 	// Run migrations
 	config.RunMigrations(db)
 
