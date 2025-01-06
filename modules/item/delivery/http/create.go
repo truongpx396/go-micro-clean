@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 	"project/common"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,13 +14,13 @@ import (
 // @Tags         Items
 // @Accept       json
 // @Produce      json
-// @Param        item  body      models.ItemCreate  true  "Item data"
-// @Success      201   {object}  models.ItemIdRead
+// @Param        item  body      entity.ItemCreate  true  "Item data"
+// @Success      201   {object}  entity.ItemIdRead
 // @Failure      400   {object}  common.AppError
 // @Failure      500   {object}  common.AppError
 // @Router       /items [post]
 func (h *itemHandler) CreateItem(c *gin.Context) {
-	var item models.ItemCreate
+	var item entity.ItemCreate
 	if err := c.ShouldBindJSON(&item); err != nil {
 		c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 		return
@@ -31,7 +31,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, models.ItemIdRead{
+	c.JSON(http.StatusCreated, entity.ItemIdRead{
 		ID: item.ID,
 	})
 }

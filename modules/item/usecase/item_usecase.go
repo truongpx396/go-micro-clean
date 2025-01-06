@@ -1,18 +1,19 @@
 package usecase
 
 import (
-	"project/modules/item/domain/models"
+	"project/common"
+	"project/modules/item/entity"
 
 	"gorm.io/gorm"
 )
 
 type ItemRepository interface {
-	Create(item *models.ItemCreate) error
-	GetByID(id uint) (*models.Item, error)
-	GetByName(name string) (*models.Item, error)
-	Update(item *models.Item) error
+	Create(item *entity.ItemCreate) error
+	GetByID(id uint) (*entity.Item, error)
+	GetByName(name string) (*entity.Item, error)
+	Update(item *entity.Item) error
 	Delete(id uint) error
-	List(pagination *models.Pagination, filters ...func(*gorm.DB) *gorm.DB) ([]models.Item, error)
+	List(pagination *common.Pagination, filters ...func(*gorm.DB) *gorm.DB) ([]entity.Item, error)
 }
 
 type itemUsecase struct {

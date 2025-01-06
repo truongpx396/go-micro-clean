@@ -1,13 +1,14 @@
 package postgre
 
 import (
-	"project/modules/item/domain/models"
+	"project/common"
+	"project/modules/item/entity"
 
 	"gorm.io/gorm"
 )
 
-func (r *itemRepository) List(pagination *models.Pagination, filters ...func(*gorm.DB) *gorm.DB) ([]models.Item, error) {
-	var items []models.Item
+func (r *itemRepository) List(pagination *common.Pagination, filters ...func(*gorm.DB) *gorm.DB) ([]entity.Item, error) {
+	var items []entity.Item
 	query := r.db
 
 	// Apply filters
@@ -17,7 +18,7 @@ func (r *itemRepository) List(pagination *models.Pagination, filters ...func(*go
 
 	// Count total items
 	var totalItems int64
-	if err := query.Model(&models.Item{}).Count(&totalItems).Error; err != nil {
+	if err := query.Model(&entity.Item{}).Count(&totalItems).Error; err != nil {
 		return nil, err
 	}
 	pagination.TotalItems = uint(totalItems)

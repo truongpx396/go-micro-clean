@@ -1,17 +1,17 @@
 package http
 
 import (
-	"project/modules/item/domain/enums"
-	"project/modules/item/domain/models"
+	"project/common"
+	"project/modules/item/entity"
 )
 
 type ItemUsecase interface {
-	CreateItem(item *models.ItemCreate) error
-	GetItemByID(id uint) (*models.Item, error)
-	UpdateItem(item *models.Item) error
+	CreateItem(item *entity.ItemCreate) error
+	GetItemByID(id uint) (*entity.Item, error)
+	UpdateItem(item *entity.Item) error
 	DeleteItem(id uint) error
-	ListItems(pagination *models.Pagination, itemType *enums.ItemType, sortBy string) ([]models.Item, error)
-	PartiallyUpdateItem(id uint, updates models.ItemUpdate) (*models.Item, error)
+	ListItems(pagination *common.Pagination, itemType *entity.ItemType, sortBy string) ([]entity.Item, error)
+	PartiallyUpdateItem(id uint, updates entity.ItemUpdate) (*entity.Item, error)
 }
 
 type itemHandler struct {

@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"errors"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 )
 
 // CreateItem creates a new item with validation and uniqueness check.
-func (u *itemUsecase) CreateItem(item *models.ItemCreate) error {
+func (u *itemUsecase) CreateItem(item *entity.ItemCreate) error {
 	// Validate item fields
 	if err := item.Validate(); err != nil {
 		return err

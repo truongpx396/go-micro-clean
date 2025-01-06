@@ -67,7 +67,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ItemListResponse"
+                            "$ref": "#/definitions/entity.ItemListResponse"
                         }
                     },
                     "400": {
@@ -103,7 +103,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ItemCreate"
+                            "$ref": "#/definitions/entity.ItemCreate"
                         }
                     }
                 ],
@@ -111,7 +111,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.ItemIdRead"
+                            "$ref": "#/definitions/entity.ItemIdRead"
                         }
                     },
                     "400": {
@@ -155,7 +155,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/entity.Item"
                         }
                     },
                     "400": {
@@ -204,7 +204,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/entity.Item"
                         }
                     }
                 ],
@@ -212,7 +212,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/entity.Item"
                         }
                     },
                     "400": {
@@ -306,7 +306,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ItemUpdate"
+                            "$ref": "#/definitions/entity.ItemUpdate"
                         }
                     }
                 ],
@@ -314,7 +314,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Item"
+                            "$ref": "#/definitions/entity.Item"
                         }
                     },
                     "400": {
@@ -357,18 +357,7 @@ const docTemplate = `{
                 }
             }
         },
-        "enums.ItemType": {
-            "type": "integer",
-            "enum": [
-                0,
-                1
-            ],
-            "x-enum-varnames": [
-                "Physical",
-                "Digital"
-            ]
-        },
-        "models.Image": {
+        "common.Image": {
             "type": "object",
             "properties": {
                 "height": {
@@ -382,95 +371,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Item": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "$ref": "#/definitions/models.Image"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "type": {
-                    "$ref": "#/definitions/enums.ItemType"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ItemCreate": {
-            "type": "object",
-            "properties": {
-                "image": {
-                    "$ref": "#/definitions/models.Image"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "type": {
-                    "$ref": "#/definitions/enums.ItemType"
-                }
-            }
-        },
-        "models.ItemIdRead": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.ItemListResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "The main response data (can be list or single resource).",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Item"
-                    }
-                },
-                "paging": {
-                    "description": "Pagination details (optional, for paginated responses).",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.Pagination"
-                        }
-                    ]
-                }
-            }
-        },
-        "models.ItemUpdate": {
-            "type": "object",
-            "properties": {
-                "image": {
-                    "$ref": "#/definitions/models.Image"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/enums.ItemType"
-                }
-            }
-        },
-        "models.Pagination": {
+        "common.Pagination": {
             "type": "object",
             "properties": {
                 "current_cursor": {
@@ -484,6 +385,105 @@ const docTemplate = `{
                 },
                 "total_items": {
                     "type": "integer"
+                }
+            }
+        },
+        "entity.Item": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "$ref": "#/definitions/common.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/definitions/entity.ItemType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.ItemCreate": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "$ref": "#/definitions/common.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/definitions/entity.ItemType"
+                }
+            }
+        },
+        "entity.ItemIdRead": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.ItemListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "The main response data (can be list or single resource).",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Item"
+                    }
+                },
+                "paging": {
+                    "description": "Pagination details (optional, for paginated responses).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Pagination"
+                        }
+                    ]
+                }
+            }
+        },
+        "entity.ItemType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "Physical",
+                "Digital"
+            ]
+        },
+        "entity.ItemUpdate": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "$ref": "#/definitions/common.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/entity.ItemType"
                 }
             }
         }

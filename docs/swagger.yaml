@@ -11,15 +11,7 @@ definitions:
       status:
         type: integer
     type: object
-  enums.ItemType:
-    enum:
-    - 0
-    - 1
-    type: integer
-    x-enum-varnames:
-    - Physical
-    - Digital
-  models.Image:
+  common.Image:
     properties:
       height:
         type: integer
@@ -28,63 +20,7 @@ definitions:
       width:
         type: integer
     type: object
-  models.Item:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      image:
-        $ref: '#/definitions/models.Image'
-      name:
-        type: string
-      status:
-        type: integer
-      type:
-        $ref: '#/definitions/enums.ItemType'
-      updated_at:
-        type: string
-    type: object
-  models.ItemCreate:
-    properties:
-      image:
-        $ref: '#/definitions/models.Image'
-      name:
-        type: string
-      status:
-        type: integer
-      type:
-        $ref: '#/definitions/enums.ItemType'
-    type: object
-  models.ItemIdRead:
-    properties:
-      id:
-        type: integer
-    type: object
-  models.ItemListResponse:
-    properties:
-      data:
-        description: The main response data (can be list or single resource).
-        items:
-          $ref: '#/definitions/models.Item'
-        type: array
-      paging:
-        allOf:
-        - $ref: '#/definitions/models.Pagination'
-        description: Pagination details (optional, for paginated responses).
-    type: object
-  models.ItemUpdate:
-    properties:
-      image:
-        $ref: '#/definitions/models.Image'
-      name:
-        type: string
-      type:
-        $ref: '#/definitions/enums.ItemType'
-    type: object
-  models.Pagination:
+  common.Pagination:
     properties:
       current_cursor:
         type: integer
@@ -94,6 +30,70 @@ definitions:
         type: integer
       total_items:
         type: integer
+    type: object
+  entity.Item:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      image:
+        $ref: '#/definitions/common.Image'
+      name:
+        type: string
+      status:
+        type: integer
+      type:
+        $ref: '#/definitions/entity.ItemType'
+      updated_at:
+        type: string
+    type: object
+  entity.ItemCreate:
+    properties:
+      image:
+        $ref: '#/definitions/common.Image'
+      name:
+        type: string
+      status:
+        type: integer
+      type:
+        $ref: '#/definitions/entity.ItemType'
+    type: object
+  entity.ItemIdRead:
+    properties:
+      id:
+        type: integer
+    type: object
+  entity.ItemListResponse:
+    properties:
+      data:
+        description: The main response data (can be list or single resource).
+        items:
+          $ref: '#/definitions/entity.Item'
+        type: array
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Pagination'
+        description: Pagination details (optional, for paginated responses).
+    type: object
+  entity.ItemType:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - Physical
+    - Digital
+  entity.ItemUpdate:
+    properties:
+      image:
+        $ref: '#/definitions/common.Image'
+      name:
+        type: string
+      type:
+        $ref: '#/definitions/entity.ItemType'
     type: object
 host: localhost:8080
 info:
@@ -137,7 +137,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.ItemListResponse'
+            $ref: '#/definitions/entity.ItemListResponse'
         "400":
           description: Bad Request
           schema:
@@ -159,14 +159,14 @@ paths:
         name: item
         required: true
         schema:
-          $ref: '#/definitions/models.ItemCreate'
+          $ref: '#/definitions/entity.ItemCreate'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.ItemIdRead'
+            $ref: '#/definitions/entity.ItemIdRead'
         "400":
           description: Bad Request
           schema:
@@ -225,7 +225,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Item'
+            $ref: '#/definitions/entity.Item'
         "400":
           description: Bad Request
           schema:
@@ -256,14 +256,14 @@ paths:
         name: item
         required: true
         schema:
-          $ref: '#/definitions/models.ItemUpdate'
+          $ref: '#/definitions/entity.ItemUpdate'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Item'
+            $ref: '#/definitions/entity.Item'
         "400":
           description: Bad Request
           schema:
@@ -294,14 +294,14 @@ paths:
         name: item
         required: true
         schema:
-          $ref: '#/definitions/models.Item'
+          $ref: '#/definitions/entity.Item'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Item'
+            $ref: '#/definitions/entity.Item'
         "400":
           description: Bad Request
           schema:

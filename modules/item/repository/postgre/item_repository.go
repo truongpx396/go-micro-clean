@@ -1,7 +1,7 @@
 package postgre
 
 import (
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 
 	"gorm.io/gorm"
 )
@@ -14,14 +14,14 @@ func NewItemRepository(db *gorm.DB) *itemRepository {
 	return &itemRepository{db: db}
 }
 
-func (r *itemRepository) Create(item *models.ItemCreate) error {
+func (r *itemRepository) Create(item *entity.ItemCreate) error {
 	return r.db.Create(item).Error
 }
 
-func (r *itemRepository) Update(item *models.Item) error {
+func (r *itemRepository) Update(item *entity.Item) error {
 	return r.db.Save(item).Error
 }
 
 func (r *itemRepository) Delete(id uint) error {
-	return r.db.Delete(&models.Item{}, id).Error
+	return r.db.Delete(&entity.Item{}, id).Error
 }

@@ -2,7 +2,7 @@ package config
 
 import (
 	"log"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,7 +19,7 @@ func SetupDatabase() *gorm.DB {
 }
 
 func RunMigrations(db *gorm.DB) {
-	err := db.AutoMigrate(&models.Item{})
+	err := db.AutoMigrate(&entity.Item{})
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}

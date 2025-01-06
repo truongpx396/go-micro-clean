@@ -3,8 +3,6 @@ package http
 import (
 	"net/http"
 	"project/common"
-	"project/modules/item/domain/enums"
-	"project/modules/item/domain/models"
 	"project/modules/item/entity"
 
 	"github.com/gin-gonic/gin"
@@ -20,12 +18,12 @@ import (
 // @Param        limit   query     int  false  "Number of items to retrieve"
 // @Param        type    query     string  false  "Item type"
 // @Param        sortBy  query     string  false  "Sort by field"
-// @Success      200     {object}  models.ItemListResponse
+// @Success      200     {object}  entity.ItemListResponse
 // @Failure      400     {object}  common.AppError
 // @Failure      500     {object}  common.AppError
 // @Router       /items [get]
 func (h *itemHandler) ListItems(c *gin.Context) {
-	var pagination models.Pagination
+	var pagination common.Pagination
 	if err := c.ShouldBindQuery(&pagination); err != nil {
 		c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid pagination parameters"))
 		return
@@ -34,9 +32,9 @@ func (h *itemHandler) ListItems(c *gin.Context) {
 	itemType := c.Query("type")
 	sortBy := c.DefaultQuery("sortBy", "name")
 
-	var itemTypeEnum *enums.ItemType
+	var itemTypeEnum *entity.ItemType
 	if itemType != "" {
-		enumValue, err := enums.ParseItemType(itemType)
+		enumValue, err := entity.ParseItemType(itemType)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, entity.ErrInvalidItemType.Error()))
 			return
@@ -46,13 +44,13 @@ func (h *itemHandler) ListItems(c *gin.Context) {
 
 	items, err := h.usecase.ListItems(&pagination, itemTypeEnum, sortBy)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, common.ErrCannotListEntity(models.Item{}.TableName(), err))
+		c.JSON(http.StatusInternalServerError, common.ErrCannotListEntity(entity.Item{}.TableName(), err))
 		return
 	}
 
-	response := models.ItemListResponse{
+	response := entity.ItemListResponse{
 		Data: items,
-		Paging: models.Pagination{
+		Paging: common.Pagination{
 			CurrentCursor: pagination.CurrentCursor,
 			NextCursor:    pagination.NextCursor,
 			Limit:         pagination.Limit,

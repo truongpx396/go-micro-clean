@@ -2,13 +2,12 @@ package usecase
 
 import (
 	"errors"
-	"project/modules/item/domain/enums"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 	"time"
 )
 
 // UpdateItem updates an existing item with validation and consistency checks.
-func (u *itemUsecase) UpdateItem(item *models.Item) error {
+func (u *itemUsecase) UpdateItem(item *entity.Item) error {
 	// Get the existing item
 	existingItem, err := u.repo.GetByID(item.ID)
 	if err != nil {
@@ -36,7 +35,7 @@ func (u *itemUsecase) UpdateItem(item *models.Item) error {
 }
 
 // PartiallyUpdateItem updates specific fields of an existing item.
-func (u *itemUsecase) PartiallyUpdateItem(id uint, updates models.ItemUpdate) (*models.Item, error) {
+func (u *itemUsecase) PartiallyUpdateItem(id uint, updates entity.ItemUpdate) (*entity.Item, error) {
 	// Check if the existingItem exists
 	existingItem, err := u.repo.GetByID(id)
 	if err != nil {
@@ -54,7 +53,7 @@ func (u *itemUsecase) PartiallyUpdateItem(id uint, updates models.ItemUpdate) (*
 	}
 
 	if updates.Type != nil {
-		if *updates.Type != enums.Physical && *updates.Type != enums.Digital {
+		if *updates.Type != entity.Physical && *updates.Type != entity.Digital {
 			return nil, errors.New("invalid item type")
 		}
 		existingItem.Type = *updates.Type

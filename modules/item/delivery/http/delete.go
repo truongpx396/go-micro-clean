@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 	"project/common"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -29,12 +29,12 @@ func (h *itemHandler) DeleteItem(c *gin.Context) {
 	}
 
 	if _, err := h.usecase.GetItemByID(uint(id)); err != nil {
-		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(models.Item{}.TableName(), err))
+		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(entity.Item{}.TableName(), err))
 		return
 	}
 
 	if err := h.usecase.DeleteItem(uint(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, common.ErrCannotDeleteEntity(models.Item{}.TableName(), err))
+		c.JSON(http.StatusInternalServerError, common.ErrCannotDeleteEntity(entity.Item{}.TableName(), err))
 		return
 	}
 

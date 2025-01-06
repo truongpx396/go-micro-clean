@@ -1,14 +1,14 @@
 package usecase
 
 import (
-	"project/modules/item/domain/enums"
-	"project/modules/item/domain/models"
+	"project/common"
+	"project/modules/item/entity"
 
 	"gorm.io/gorm"
 )
 
 // ListItems lists items with pagination, filtering by type, and sorting options.
-func (u *itemUsecase) ListItems(pagination *models.Pagination, itemType *enums.ItemType, sortBy string) ([]models.Item, error) {
+func (u *itemUsecase) ListItems(pagination *common.Pagination, itemType *entity.ItemType, sortBy string) ([]entity.Item, error) {
 	// Apply filters
 	var filters []func(*gorm.DB) *gorm.DB
 

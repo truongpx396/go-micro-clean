@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 	"project/common"
-	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ import (
 // @Accept       json
 // @Produce      json
 // @Param        id    path      int  true  "Item ID"
-// @Success      200   {object}  models.Item
+// @Success      200   {object}  entity.Item
 // @Failure      400   {object}  common.AppError
 // @Failure      404   {object}  common.AppError
 // @Failure      500   {object}  common.AppError
@@ -30,7 +30,7 @@ func (h *itemHandler) GetItemByID(c *gin.Context) {
 
 	item, err := h.usecase.GetItemByID(uint(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(models.Item{}.TableName(), err))
+		c.JSON(http.StatusNotFound, common.ErrEntityNotFound(entity.Item{}.TableName(), err))
 		return
 	}
 
