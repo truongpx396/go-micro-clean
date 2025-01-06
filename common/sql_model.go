@@ -37,6 +37,16 @@ func (sqlModel *SQLModel) BeforeUpdate() {
 	// }
 }
 
+func NewSQLModel() SQLModel {
+	now := time.Now().UTC()
+
+	return SQLModel{
+		ID:        0,
+		CreatedAt: &now,
+		UpdatedAt: &now,
+	}
+}
+
 func prepareForInsert(id *uint, status *int, createdAt *time.Time, updatedAt *time.Time) {
 	now := time.Now().UTC()
 	*id = 0

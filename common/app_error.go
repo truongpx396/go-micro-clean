@@ -108,6 +108,15 @@ func ErrInternal(err error) *AppError {
 		"something went wrong in the server", err.Error(), "ErrInternal")
 }
 
+func ErrInternalWithMsg(err error, msg string) *AppError {
+	return NewGeneralErrorResponse(http.StatusInternalServerError, err,
+		msg, err.Error(), "ErrInternal")
+}
+
+func ErrUnauthorized(err error) *AppError {
+	return NewUnauthorized(err, "The request could not be authorized", "ErrUnauthorized")
+}
+
 func ErrNoPermission(err error) *AppError {
 	return NewBadRequestError(
 		err,
@@ -182,4 +191,5 @@ func ErrEntityDeleted(entity string, err error) *AppError {
 	)
 }
 
+// ErrRecordNotFound is used to make our application logic independent of other libraries errors
 var ErrRecordNotFound = errors.New("record not found")
