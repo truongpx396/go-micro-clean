@@ -5,6 +5,7 @@ import (
 	"project/common"
 	"project/modules/item/domain/enums"
 	"project/modules/item/domain/models"
+	"project/modules/item/entity"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,7 +38,7 @@ func (h *itemHandler) ListItems(c *gin.Context) {
 	if itemType != "" {
 		enumValue, err := enums.ParseItemType(itemType)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, "Invalid item type"))
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequestWithMsg(err, entity.ErrInvalidItemType.Error()))
 			return
 		}
 		itemTypeEnum = &enumValue

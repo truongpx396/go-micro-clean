@@ -1,4 +1,4 @@
-package models
+package common
 
 // Pagination metadata to include in API responses.
 type Pagination struct {
