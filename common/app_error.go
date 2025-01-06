@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -32,6 +33,15 @@ type AppError struct {
 	Message string `json:"message"`
 	Details string `json:"details"`
 	Code    string `json:"code"`
+}
+
+func WriteErrorResponse(c *gin.Context, err error) {
+	if appErr, ok := err.(*AppError); ok {
+		c.JSON(appErr.Status, appErr)
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, ErrInternal(err))
 }
 
 func NewBadRequestResponse(root error, msg, details, code string) *AppError {
