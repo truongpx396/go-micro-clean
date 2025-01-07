@@ -5,7 +5,7 @@ import (
 	"project/common"
 	"project/modules/auth/entity"
 
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type AuthRepository interface {

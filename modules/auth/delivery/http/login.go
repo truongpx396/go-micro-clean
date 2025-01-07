@@ -24,7 +24,7 @@ func (api *authHandler) LoginHdl() func(*gin.Context) {
 		var data entity.AuthEmailPassword
 
 		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+			common.WriteErrorResponse(c, common.ErrInvalidRequest(err))
 			return
 		}
 
