@@ -35,6 +35,16 @@ type AppError struct {
 	Code    string `json:"code"`
 }
 
+func NewErrorResponse(root error, msg, log, key string) *AppError {
+	return &AppError{
+		Status:  http.StatusBadRequest,
+		RootErr: root,
+		Message: msg,
+		Details: log,
+		Code:    key,
+	}
+}
+
 func WriteErrorResponse(c *gin.Context, err error) {
 	if appErr, ok := err.(*AppError); ok {
 		c.JSON(appErr.Status, appErr)
@@ -71,6 +81,14 @@ func NewUnauthorized(root error, msg, key string) *AppError {
 		Message: msg,
 		Code:    key,
 	}
+}
+
+func NewCustomError(root error, msg string, key string) *AppError {
+	if root != nil {
+		return NewErrorResponse(root, msg, root.Error(), key)
+	}
+
+	return NewErrorResponse(errors.New(msg), msg, msg, key)
 }
 
 func NewBadRequestError(root error, msg string, code string) *AppError {
