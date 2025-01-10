@@ -7,6 +7,26 @@ import (
 	"github.com/btcsuite/btcutil/base58"
 )
 
+type SimpleUser struct {
+	common.SQLModel
+	LastName  string        `json:"last_name" gorm:"column:last_name;" db:"last_name"`
+	FirstName string        `json:"first_name" gorm:"column:first_name;" db:"first_name"`
+	Avatar    *common.Image `json:"avatar" gorm:"column:avatar;" db:"avatar"`
+}
+
+func (SimpleUser) TableName() string {
+	return User{}.TableName()
+}
+
+func NewSimpleUser(id int, firstName, lastName string, avatar *common.Image) SimpleUser {
+	return SimpleUser{
+		SQLModel:  common.SQLModel{ID: uint(id)},
+		LastName:  lastName,
+		FirstName: firstName,
+		Avatar:    avatar,
+	}
+}
+
 type User struct {
 	common.SQLModel
 	Email     string        `json:"email" gorm:"column:email;"`

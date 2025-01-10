@@ -221,3 +221,5 @@ func ErrEntityDeleted(entity string, err error) *AppError {
 
 // ErrRecordNotFound is used to make our application logic independent of other libraries errors
 var ErrRecordNotFound = errors.New("record not found")
+
+var ErrNotFound = NewGeneralErrorResponse(http.StatusNotFound, nil, "The requested resource could not be found", "", "ErrNotFound")
