@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"project/common"
 	"project/modules/auth/entity"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -13,7 +12,7 @@ type AuthRepository interface {
 	GetAuth(ctx context.Context, email string) (*entity.Auth, error)
 }
 
-type UserRepository interface {
+type UserRpcClient interface {
 	CreateUser(ctx context.Context, firstName, lastName, email, avatar string) (newId int, err error)
 }
 
@@ -30,12 +29,12 @@ type JWTProviderComponent interface {
 
 type authUsecase struct {
 	authRepository AuthRepository
-	userRepository UserRepository
+	userRepository UserRpcClient
 	jwtProvider    JWTProviderComponent
 	hasher         Hasher
 }
 
-func NewAuthUsecase(repository AuthRepository, userRepository UserRepository,
+func NewAuthUsecase(repository AuthRepository, userRepository UserRpcClient,
 	jwtProvider JWTProviderComponent, hasher Hasher) *authUsecase {
 	return &authUsecase{
 		authRepository: repository,
@@ -43,14 +42,4 @@ func NewAuthUsecase(repository AuthRepository, userRepository UserRepository,
 		jwtProvider:    jwtProvider,
 		hasher:         hasher,
 	}
-}
-
-func (biz *authUsecase) IntrospectToken(ctx context.Context, accessToken string) (*jwt.RegisteredClaims, error) {
-	claims, err := biz.jwtProvider.ParseToken(ctx, accessToken)
-
-	if err != nil {
-		return nil, common.ErrUnauthorized(err)
-	}
-
-	return claims, nil
 }
