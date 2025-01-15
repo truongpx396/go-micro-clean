@@ -1,0 +1,133 @@
+
+zookeeper:
+  schema: micro-clean
+  # address: [ 172.28.0.1:12181 ]
+  address: [ 127.0.0.1:12181 ]
+  username: ''
+  password: ''
+
+###################### Mysql ######################
+# MySQL configuration
+# Currently, only single machine setup is supported
+#
+# Maximum number of open connections
+# Maximum number of idle connections
+# Maximum lifetime in seconds a connection can be reused
+# Log level: 1=slient, 2=error, 3=warn, 4=info
+# Slow query threshold in milliseconds
+postgre:
+  # address: [ 172.28.0.1:13306 ]
+  address: [ 127.0.0.1:13306 ]
+  username: root
+  password: openIM123
+  database: openIM_v3
+  maxOpenConn: 1000
+  maxIdleConn: 100
+  maxLifeTime: 60
+  logLevel: 4
+  slowThreshold: 500
+
+
+###################### Redis configuration information ######################
+# Redis configuration
+#
+# Username is required only for Redis version 6.0+
+redis:
+  # address: [ 172.28.0.1:16379 ]
+  address: [ 127.0.0.1:16379 ]
+  username: ''
+  password: openIM123
+
+
+###################### RPC configuration information ######################
+# RPC configuration
+#
+# IP address to register with zookeeper when starting RPC, the IP and corresponding rpcPort should be accessible by api/gateway
+# Default listen IP is 0.0.0.0
+rpc:
+  # registerIP: ''
+  registerIP : 127.0.0.1
+  listenIP: 0.0.0.0
+  # listenIP: 127.0.0.1
+
+###################### API configuration information ######################
+# API configuration
+#
+# API service port
+# Default listen IP is 0.0.0.0
+api:
+  openImApiPort: [ 10002 ]
+  listenIP: 0.0.0.0
+
+
+###################### RPC Port Configuration ######################
+# RPC service ports
+# These ports are passed into the program by the script and are not recommended to modify
+# For launching multiple programs, just fill in multiple ports separated by commas
+# For example, [10110, 10111]
+rpcPort: 
+  openImUserPort: [ 10110 ]
+  openImFriendPort: [ 10120 ]
+  openImAuthPort: [ 10160 ]
+  openImPushPort: [ 10170 ]
+
+
+###################### RPC Register Name Configuration ######################
+# RPC service names for registration, it's not recommended to modify these
+rpcRegisterName:
+  openImUserName: User
+  openImFriendName: Friend
+  openImAuthName: Auth
+  openImPushName: Push
+ 
+
+###################### Log Configuration ######################
+# Log configuration
+#
+# Storage directory
+# Log rotation time
+# Maximum number of logs to retain
+# Log level, 6 means all levels
+# Whether to output to stdout
+# Whether to output in json format
+# Whether to include stack trace in logs
+log:
+  storageLocation: ../../logs/
+  rotationTime: 24
+  remainRotationCount: 2
+  remainLogLevel: 6
+  isStdout: false
+  isJson: false
+  withStack: false
+
+push:
+  enable: fmc
+  fcm:
+    serviceAccount: "x.json"
+  jpns:
+    appKey: ''
+    masterSecret: ''
+    pushUrl: ''
+    pushIntent: ''
+
+# Secret key
+secret: openIM123
+
+# Token policy
+#
+# Token expiration period in days
+tokenPolicy:
+  expire: 90
+
+
+###################### Prometheus ######################
+# Prometheus configuration for various services
+# The number of Prometheus ports per service needs to correspond to rpcPort
+# The number of ports needs to be consistent with msg_transfer_service_num in script/path_info.sh
+prometheus:
+  enable: true
+  userPrometheusPort: [ 20110 ]
+  friendPrometheusPort: [ 20120 ]
+  authPrometheusPort: [ 20160 ]
+  pushPrometheusPort: [ 20170 ]
+  

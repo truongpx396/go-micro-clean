@@ -1,0 +1,149 @@
+package cmd
+
+import (
+	"fmt"
+
+	constant "project/proto"
+
+	"github.com/OpenIMSDK/tools/log"
+	config2 "github.com/openimsdk/open-im-server/v3/pkg/common/config"
+	"honnef.co/go/tools/config"
+
+	"github.com/spf13/cobra"
+)
+
+type RootCmd struct {
+	Command        cobra.Command
+	Name           string
+	port           int
+	prometheusPort int
+}
+
+type CmdOpts struct {
+	loggerPrefixName string
+}
+
+func WithCronTaskLogName() func(*CmdOpts) {
+	return func(opts *CmdOpts) {
+		opts.loggerPrefixName = "OpenIM.CronTask.log.all"
+	}
+}
+
+func WithLogName(logName string) func(*CmdOpts) {
+	return func(opts *CmdOpts) {
+		opts.loggerPrefixName = logName
+	}
+}
+
+func NewRootCmd(name string, opts ...func(*CmdOpts)) (rootCmd *RootCmd) {
+	rootCmd = &RootCmd{Name: name}
+	c := cobra.Command{
+		// Use:   "start openIM ${{name}}",
+		Use:   fmt.Sprintf("start openIM %s", name),
+		Short: fmt.Sprintf(`Start %s `, name),
+		Long:  fmt.Sprintf(`Start %s `, name),
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if err := rootCmd.getConfFromCmdAndInit(cmd); err != nil {
+				panic(err)
+			}
+			cmdOpts := &CmdOpts{}
+			for _, opt := range opts {
+				opt(cmdOpts)
+			}
+			if cmdOpts.loggerPrefixName == "" {
+				cmdOpts.loggerPrefixName = "OpenIM.log.all"
+			}
+			if err := log.InitFromConfig(cmdOpts.loggerPrefixName, name, config.Config.Log.RemainLogLevel, config.Config.Log.IsStdout, config.Config.Log.IsJson, config.Config.Log.StorageLocation, config.Config.Log.RemainRotationCount, config.Config.Log.RotationTime); err != nil {
+				panic(err)
+			}
+			return nil
+		},
+	}
+	rootCmd.Command = c
+	rootCmd.addConfFlag()
+	return rootCmd
+}
+
+func (r *RootCmd) PreLoadConfig() {
+	if err := config2.InitConfig(""); err != nil {
+		panic(err)
+	}
+}
+
+func (r *RootCmd) SetSvcName(name string) {
+	r.Name = name
+}
+
+func (r *RootCmd) addConfFlag() {
+	r.Command.Flags().StringP(constant.FlagConf, "c", "", "Path to config file folder")
+}
+
+func (r *RootCmd) AddPortFlag() {
+	r.Command.Flags().IntP(constant.FlagPort, "p", 0, "server listen port")
+}
+
+func (r *RootCmd) getPortFlag(cmd *cobra.Command) int {
+	port, _ := cmd.Flags().GetInt(constant.FlagPort)
+	return port
+}
+
+func (r *RootCmd) GetPortFlag() int {
+	return r.port
+}
+
+func (r *RootCmd) AddPrometheusPortFlag() {
+	r.Command.Flags().IntP(constant.FlagPrometheusPort, "", 0, "server prometheus listen port")
+}
+
+func (r *RootCmd) getPrometheusPortFlag(cmd *cobra.Command) int {
+	port, _ := cmd.Flags().GetInt(constant.FlagPrometheusPort)
+	return port
+}
+
+func (r *RootCmd) GetPrometheusPortFlag() int {
+	if r.prometheusPort == 0 {
+		switch r.Name {
+		case config.Config.RpcRegisterName.OpenImAuthName:
+			return config.Config.Prometheus.AuthPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImUserName:
+			return config.Config.Prometheus.UserPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImFriendName:
+			return config.Config.Prometheus.FriendPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImGroupName:
+			return config.Config.Prometheus.GroupPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImMsgName:
+			return config.Config.Prometheus.MessagePrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImConversationName:
+			return config.Config.Prometheus.ConversationPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImConversationName:
+			return config.Config.Prometheus.ConversationPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImPushName:
+			return config.Config.Prometheus.PushPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImMessageGatewayName:
+			return config.Config.Prometheus.MessageGatewayPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImMessageTransfer:
+			return config.Config.Prometheus.MessageTransferPrometheusPort[0]
+		case config.Config.RpcRegisterName.OpenImThirdName:
+			return config.Config.Prometheus.ThirdPrometheusPort[0]
+		default:
+			return 0
+
+		}
+	}
+
+	return r.prometheusPort
+}
+
+func (r *RootCmd) getConfFromCmdAndInit(cmdLines *cobra.Command) error {
+	configFolderPath, _ := cmdLines.Flags().GetString(constant.FlagConf)
+	fmt.Println("configFolderPath:", configFolderPath)
+	return config2.InitConfig(configFolderPath)
+}
+
+func (r *RootCmd) Execute() error {
+	return r.Command.Execute()
+}
+
+func (r *RootCmd) AddCommand(cmds ...*cobra.Command) {
+	r.Command.AddCommand(cmds...)
+}
