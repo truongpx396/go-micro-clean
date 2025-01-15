@@ -2,7 +2,7 @@ package config
 
 import (
 	"log"
-	"project/modules/item/entity"
+	"project/internal/item/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

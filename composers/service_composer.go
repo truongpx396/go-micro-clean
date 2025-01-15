@@ -4,14 +4,14 @@ import (
 	"context"
 	"project/common"
 
-	authApi "project/modules/auth/delivery/http"
-	authRepo "project/modules/auth/repository/postgre"
-	authUserRpc "project/modules/auth/repository/rpc-client"
-	authUsecase "project/modules/auth/usecase"
+	authApi "project/internal/auth/delivery/http"
+	authRepo "project/internal/auth/repository/postgre"
+	authUserRpc "project/internal/auth/repository/rpc-client"
+	authUsecase "project/internal/auth/usecase"
 
-	itemApi "project/modules/item/delivery/http"
-	itemRepo "project/modules/item/repository/postgre"
-	itemUsecase "project/modules/item/usecase"
+	itemApi "project/internal/item/delivery/http"
+	itemRepo "project/internal/item/repository/postgre"
+	itemUsecase "project/internal/item/usecase"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
