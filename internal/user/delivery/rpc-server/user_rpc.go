@@ -6,7 +6,7 @@ import (
 	"project/common"
 	"project/internal/user/entity"
 
-	pb "project/proto/gen"
+	"project/proto/user"
 
 	"github.com/btcsuite/btcutil/base58"
 )
@@ -24,21 +24,21 @@ func NewGRPCSerivce(dbStore UserStore) *grpcService {
 	return &grpcService{dbStore: dbStore}
 }
 
-func (s *grpcService) GetUserById(context.Context, *pb.GetUserByIdReq) (*pb.PublicUserInfoResp, error) {
+func (s *grpcService) GetUserById(context.Context, *user.GetUserByIdReq) (*user.PublicUserInfoResp, error) {
 	return nil, nil
 }
 
-func (s *grpcService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*pb.NewUserIdResp, error) {
+func (s *grpcService) CreateUser(ctx context.Context, req *user.CreateUserReq) (*user.NewUserIdResp, error) {
 	newUserData := entity.NewUserForCreation(req.FirstName, req.LastName, req.Email, req.Avatar)
 
 	if err := s.dbStore.CreateUser(ctx, &newUserData); err != nil {
 		return nil, common.ErrInternal(err)
 	}
 
-	return &pb.NewUserIdResp{Id: int32(newUserData.ID)}, nil
+	return &user.NewUserIdResp{Id: int32(newUserData.ID)}, nil
 }
 
-func (s *grpcService) GetUsersByIds(ctx context.Context, request *pb.GetUsersByIdsReq) (*pb.PublicUsersInfoResp, error) {
+func (s *grpcService) GetUsersByIds(ctx context.Context, request *user.GetUsersByIdsReq) (*user.PublicUsersInfoResp, error) {
 	userIds := make([]int, len(request.GetIds()))
 
 	for i := range userIds {
@@ -51,7 +51,7 @@ func (s *grpcService) GetUsersByIds(ctx context.Context, request *pb.GetUsersByI
 		return nil, err
 	}
 
-	users := make([]*pb.PublicUserInfo, len(rs))
+	users := make([]*user.PublicUserInfo, len(rs))
 
 	for i, item := range rs {
 		//item.Mask(common.MaskTypeUser)
@@ -59,7 +59,7 @@ func (s *grpcService) GetUsersByIds(ctx context.Context, request *pb.GetUsersByI
 		userAvatar, _ := json.Marshal(item.Avatar)
 		avatarData := base58.Encode(userAvatar)
 
-		users[i] = &pb.PublicUserInfo{
+		users[i] = &user.PublicUserInfo{
 			// Id:        item.FakeId(),
 			Id:        int32(item.ID),
 			FirstName: item.FirstName,
@@ -69,5 +69,5 @@ func (s *grpcService) GetUsersByIds(ctx context.Context, request *pb.GetUsersByI
 		}
 	}
 
-	return &pb.PublicUsersInfoResp{Users: users}, nil
+	return &user.PublicUsersInfoResp{Users: users}, nil
 }

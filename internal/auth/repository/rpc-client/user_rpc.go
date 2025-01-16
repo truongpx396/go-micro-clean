@@ -2,21 +2,21 @@ package rpcclient
 
 import (
 	"context"
-	pb "project/proto/gen"
+	"project/proto/user"
 
 	"github.com/pkg/errors"
 )
 
 type rpcUserClient struct {
-	client pb.UserServiceClient
+	client user.UserServiceClient
 }
 
-func NewClient(client pb.UserServiceClient) *rpcUserClient {
+func NewClient(client user.UserServiceClient) *rpcUserClient {
 	return &rpcUserClient{client: client}
 }
 
 func (c *rpcUserClient) CreateUser(ctx context.Context, firstName, lastName, email, avatar string) (newId int, err error) {
-	resp, err := c.client.CreateUser(ctx, &pb.CreateUserReq{
+	resp, err := c.client.CreateUser(ctx, &user.CreateUserReq{
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,

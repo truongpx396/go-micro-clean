@@ -3,7 +3,7 @@ package rpcserver
 import (
 	"context"
 
-	pb "project/proto/gen"
+	"project/proto/auth"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -20,7 +20,7 @@ func NewService(business AuthUsecase) *grpcService {
 	return &grpcService{business: business}
 }
 
-func (s *grpcService) IntrospectToken(ctx context.Context, req *pb.IntrospectReq) (*pb.IntrospectResp, error) {
+func (s *grpcService) IntrospectToken(ctx context.Context, req *auth.IntrospectReq) (*auth.IntrospectResp, error) {
 	claims, err := s.business.IntrospectToken(ctx, req.AccessToken)
 
 	// if err != nil {
@@ -31,7 +31,7 @@ func (s *grpcService) IntrospectToken(ctx context.Context, req *pb.IntrospectReq
 		return nil, err
 	}
 
-	return &pb.IntrospectResp{
+	return &auth.IntrospectResp{
 		Tid: claims.ID,
 		Sub: claims.Subject,
 	}, nil
