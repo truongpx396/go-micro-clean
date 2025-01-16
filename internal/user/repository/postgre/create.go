@@ -3,7 +3,7 @@ package postgre
 import (
 	"context"
 	"project/common"
-	"project/modules/user/entity"
+	"project/internal/user/entity"
 )
 
 func (s *userRepository) CreateUser(ctx context.Context, data *entity.UserCreation) error {

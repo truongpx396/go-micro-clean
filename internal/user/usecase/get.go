@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 	"project/common"
-	"project/modules/user/entity"
+	"project/internal/user/entity"
 )
 
 func (biz *userUsecase) GetUserProfile(ctx context.Context, requesterId int) (*entity.User, error) {

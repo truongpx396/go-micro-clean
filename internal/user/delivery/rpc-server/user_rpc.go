@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"project/common"
-	"project/modules/user/entity"
+	"project/internal/user/entity"
 
 	pb "project/proto/gen"
 

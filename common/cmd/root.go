@@ -3,11 +3,9 @@ package cmd
 import (
 	"fmt"
 
+	"project/common/config"
 	constant "project/proto"
-
-	"github.com/OpenIMSDK/tools/log"
-	config2 "github.com/openimsdk/open-im-server/v3/pkg/common/config"
-	"honnef.co/go/tools/config"
+	"project/tools/log"
 
 	"github.com/spf13/cobra"
 )
@@ -25,7 +23,7 @@ type CmdOpts struct {
 
 func WithCronTaskLogName() func(*CmdOpts) {
 	return func(opts *CmdOpts) {
-		opts.loggerPrefixName = "OpenIM.CronTask.log.all"
+		opts.loggerPrefixName = "MicroClean.CronTask.log.all"
 	}
 }
 
@@ -38,8 +36,7 @@ func WithLogName(logName string) func(*CmdOpts) {
 func NewRootCmd(name string, opts ...func(*CmdOpts)) (rootCmd *RootCmd) {
 	rootCmd = &RootCmd{Name: name}
 	c := cobra.Command{
-		// Use:   "start openIM ${{name}}",
-		Use:   fmt.Sprintf("start openIM %s", name),
+		Use:   fmt.Sprintf("start micro-clean %s", name),
 		Short: fmt.Sprintf(`Start %s `, name),
 		Long:  fmt.Sprintf(`Start %s `, name),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
@@ -51,11 +48,11 @@ func NewRootCmd(name string, opts ...func(*CmdOpts)) (rootCmd *RootCmd) {
 				opt(cmdOpts)
 			}
 			if cmdOpts.loggerPrefixName == "" {
-				cmdOpts.loggerPrefixName = "OpenIM.log.all"
+				cmdOpts.loggerPrefixName = "MicroClean.log.all"
 			}
-			if err := log.InitFromConfig(cmdOpts.loggerPrefixName, name, config.Config.Log.RemainLogLevel, config.Config.Log.IsStdout, config.Config.Log.IsJson, config.Config.Log.StorageLocation, config.Config.Log.RemainRotationCount, config.Config.Log.RotationTime); err != nil {
-				panic(err)
-			}
+
+			log.NewLogger(cmdOpts.loggerPrefixName, config.Config.Log.RotationTime, config.Config.Log.RemainRotationCount)
+
 			return nil
 		},
 	}
@@ -65,9 +62,9 @@ func NewRootCmd(name string, opts ...func(*CmdOpts)) (rootCmd *RootCmd) {
 }
 
 func (r *RootCmd) PreLoadConfig() {
-	if err := config2.InitConfig(""); err != nil {
-		panic(err)
-	}
+	// if err := config.InitConfig(""); err != nil {
+	// 	panic(err)
+	// }
 }
 
 func (r *RootCmd) SetSvcName(name string) {
@@ -103,28 +100,14 @@ func (r *RootCmd) getPrometheusPortFlag(cmd *cobra.Command) int {
 func (r *RootCmd) GetPrometheusPortFlag() int {
 	if r.prometheusPort == 0 {
 		switch r.Name {
-		case config.Config.RpcRegisterName.OpenImAuthName:
+		case config.Config.RPCRegisterName.MicroCleanAuthName:
 			return config.Config.Prometheus.AuthPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImUserName:
+		case config.Config.RPCRegisterName.MicroCleanUserName:
 			return config.Config.Prometheus.UserPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImFriendName:
-			return config.Config.Prometheus.FriendPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImGroupName:
-			return config.Config.Prometheus.GroupPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImMsgName:
-			return config.Config.Prometheus.MessagePrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImConversationName:
-			return config.Config.Prometheus.ConversationPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImConversationName:
-			return config.Config.Prometheus.ConversationPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImPushName:
+		case config.Config.RPCRegisterName.MicroCleanItemName:
+			return config.Config.Prometheus.ItemPrometheusPort[0]
+		case config.Config.RPCRegisterName.MicroCleanPushName:
 			return config.Config.Prometheus.PushPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImMessageGatewayName:
-			return config.Config.Prometheus.MessageGatewayPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImMessageTransfer:
-			return config.Config.Prometheus.MessageTransferPrometheusPort[0]
-		case config.Config.RpcRegisterName.OpenImThirdName:
-			return config.Config.Prometheus.ThirdPrometheusPort[0]
 		default:
 			return 0
 
@@ -137,7 +120,7 @@ func (r *RootCmd) GetPrometheusPortFlag() int {
 func (r *RootCmd) getConfFromCmdAndInit(cmdLines *cobra.Command) error {
 	configFolderPath, _ := cmdLines.Flags().GetString(constant.FlagConf)
 	fmt.Println("configFolderPath:", configFolderPath)
-	return config2.InitConfig(configFolderPath)
+	return config.LoadConfig(config.FileName, configFolderPath)
 }
 
 func (r *RootCmd) Execute() error {

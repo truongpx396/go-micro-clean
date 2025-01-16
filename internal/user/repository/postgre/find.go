@@ -3,7 +3,7 @@ package postgre
 import (
 	"context"
 	"project/common"
-	"project/modules/user/entity"
+	"project/internal/user/entity"
 
 	"gorm.io/gorm"
 )

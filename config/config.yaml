@@ -19,8 +19,8 @@ postgre:
   # address: [ 172.28.0.1:13306 ]
   address: [ 127.0.0.1:13306 ]
   username: root
-  password: openIM123
-  database: openIM_v3
+  password: microClean123
+  database: microClean
   maxOpenConn: 1000
   maxIdleConn: 100
   maxLifeTime: 60
@@ -56,7 +56,7 @@ rpc:
 # API service port
 # Default listen IP is 0.0.0.0
 api:
-  openImApiPort: [ 10002 ]
+  microCleanApiPort: [ 10002 ]
   listenIP: 0.0.0.0
 
 
@@ -66,19 +66,19 @@ api:
 # For launching multiple programs, just fill in multiple ports separated by commas
 # For example, [10110, 10111]
 rpcPort: 
-  openImUserPort: [ 10110 ]
-  openImFriendPort: [ 10120 ]
-  openImAuthPort: [ 10160 ]
-  openImPushPort: [ 10170 ]
+  microCleanUserPort: [ 10110 ]
+  microCleanItemPort: [ 10120 ]
+  microCleanAuthPort: [ 10160 ]
+  microCleanPushPort: [ 10170 ]
 
 
 ###################### RPC Register Name Configuration ######################
 # RPC service names for registration, it's not recommended to modify these
 rpcRegisterName:
-  openImUserName: User
-  openImFriendName: Friend
-  openImAuthName: Auth
-  openImPushName: Push
+  microCleanUserName: User
+  microCleanItemName: Item
+  microCleanAuthName: Auth
+  microCleanPushName: Push
  
 
 ###################### Log Configuration ######################
@@ -111,7 +111,7 @@ push:
     pushIntent: ''
 
 # Secret key
-secret: openIM123
+secret: microClean123
 
 # Token policy
 #
@@ -127,7 +127,7 @@ tokenPolicy:
 prometheus:
   enable: true
   userPrometheusPort: [ 20110 ]
-  friendPrometheusPort: [ 20120 ]
+  itemPrometheusPort: [ 20120 ]
   authPrometheusPort: [ 20160 ]
   pushPrometheusPort: [ 20170 ]
   

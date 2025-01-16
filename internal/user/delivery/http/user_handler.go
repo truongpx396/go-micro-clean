@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 	"project/common"
-	"project/modules/user/entity"
+	"project/internal/user/entity"
 
 	"github.com/gin-gonic/gin"
 )
