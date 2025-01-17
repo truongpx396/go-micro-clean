@@ -29,3 +29,15 @@ func NewLogger(processID string, rotationSize int, rotationCount int) {
 	// Return the logger with caller information enabled
 	Logger = zap.New(core, zap.AddCaller())
 }
+
+func Error(msg string, err error, fields ...interface{}) {
+	Logger.Error(msg, zap.Error(err), zap.Any(" ", fields))
+}
+
+func Warn(msg string, fields ...interface{}) {
+	Logger.Warn(msg, zap.Any(" ", fields))
+}
+
+func Info(msg string, fields ...interface{}) {
+	Logger.Info(msg, zap.Any(" ", fields))
+}
