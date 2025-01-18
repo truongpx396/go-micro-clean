@@ -13,6 +13,11 @@ type User struct {
 	Client user.UserServiceClient
 }
 
+// CreateUser implements usecase.UserRpcClient.
+func (u *User) CreateUser(ctx context.Context, firstName string, lastName string, email string, avatar string) (newId int, err error) {
+	panic("unimplemented")
+}
+
 // NewUser initializes and returns a User instance based on the provided service discovery registry.
 func NewUser(ctx context.Context) *User {
 	conn, err := grpc.NewClient(":50052", grpc.WithTransportCredentials(insecure.NewCredentials()))

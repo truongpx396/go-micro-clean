@@ -3,12 +3,16 @@ package rpcserver
 import (
 	"context"
 
+	"project/common"
 	"project/internal/auth/entity"
+	"project/internal/auth/repository/postgre"
+	"project/internal/auth/usecase"
 	"project/pkg/rpcclient"
 	"project/proto/auth"
 
 	"github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
 
 type AuthUsecase interface {
@@ -18,19 +22,29 @@ type AuthUsecase interface {
 }
 
 type authServer struct {
-	business      AuthUsecase
-	userRpcClient *rpcclient.UserRpcClient
+	business AuthUsecase
+	// userRpcClient *rpcclient.UserRpcClient
 }
 
-func NewAuthServer(business AuthUsecase, userRpcClient *rpcclient.UserRpcClient) *authServer {
-	return &authServer{
-		business:      business,
-		userRpcClient: userRpcClient,
-	}
-}
+// func NewAuthServer(business AuthUsecase, userRpcClient *rpcclient.UserRpcClient) *authServer {
+// 	return &authServer{
+// 		business:      business,
+// 	}
+// }
 
-func StartAuthServer(business AuthUsecase, userRpcClient *rpcclient.UserRpcClient, server *grpc.Server) {
-	authService := NewAuthServer(business, userRpcClient)
+func StartAuthServer(ctx context.Context, db *gorm.DB, server *grpc.Server) {
+
+	// business := usecase.NewAuthUsecase()
+
+	jwtComp := common.NewJWT("jwt")
+
+	authRepo := postgre.NewPostgreRepository(db)
+	hasher := new(common.Hasher)
+
+	userRepo := rpcclient.NewUser(ctx)
+	business := usecase.NewAuthUsecase(authRepo, userRepo, jwtComp, hasher)
+
+	authService := &authServer{business}
 	auth.RegisterAuthServiceServer(server, authService)
 }
 
