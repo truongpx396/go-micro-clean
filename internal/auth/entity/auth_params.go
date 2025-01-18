@@ -2,6 +2,7 @@ package entity
 
 import (
 	"project/common"
+	"project/proto/auth"
 	"strings"
 )
 
@@ -24,6 +25,11 @@ func (ad *AuthEmailPassword) Validate() error {
 	}
 
 	return nil
+}
+
+func (a *AuthEmailPassword) FromProto(req *auth.LoginRequest) {
+	a.Email = req.Email
+	a.Password = req.Password
 }
 
 type AuthRegister struct {
@@ -53,6 +59,20 @@ func (ar *AuthRegister) Validate() error {
 	return nil
 }
 
+func (a *AuthRegister) FromProto(req *auth.RegisterRequest) {
+	a.FirstName = req.FirstName
+	a.LastName = req.LastName
+	a.Email = req.Email
+	a.Password = req.Password
+	// a.Avatar = req.Avatar
+}
+
+func (a *AuthRegister) ToProto() *auth.RegisterResponse {
+	return &auth.RegisterResponse{
+		Success: true,
+	}
+}
+
 type Token struct {
 	Token string `json:"token"`
 	// ExpiredIn in seconds
@@ -64,6 +84,13 @@ type TokenResponse struct {
 	// RefreshToken will be used when access token expired
 	// to issue new pair access token and refresh token.
 	RefreshToken *Token `json:"refresh_token,omitempty"`
+}
+
+func (t *TokenResponse) ToProto() *auth.LoginResponse {
+	return &auth.LoginResponse{
+		AccessToken: t.AccessToken.Token,
+		ExpiredIn:   int32(t.AccessToken.ExpiredIn),
+	}
 }
 
 type SuccessResponse struct {

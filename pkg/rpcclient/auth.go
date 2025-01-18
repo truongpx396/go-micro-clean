@@ -10,6 +10,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+type Auth struct {
+	conn   grpc.ClientConnInterface
+	Client auth.AuthServiceClient
+}
+
 func NewAuth(ctx context.Context) *Auth {
 	// conn, err := discov.GetConn(context.Background(), config.Config.RpcRegisterName.OpenImAuthName)
 	conn, err := grpc.NewClient(":50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -19,9 +24,4 @@ func NewAuth(ctx context.Context) *Auth {
 	}
 	client := auth.NewAuthServiceClient(conn)
 	return &Auth{conn: conn, Client: client}
-}
-
-type Auth struct {
-	conn   grpc.ClientConnInterface
-	Client auth.AuthServiceClient
 }
