@@ -1,6 +1,10 @@
 package auth
 
-import "project/common/config"
+import (
+	"project/common/cmd"
+	"project/common/config"
+	rpcserver "project/internal/auth/delivery/rpc-server"
+)
 
 func main() {
 	authCmd := cmd.NewRpcCmd("auth")
@@ -12,7 +16,7 @@ func main() {
 	if err := authCmd.Exec(); err != nil {
 		panic(err.Error())
 	}
-	if err := authCmd.StartSvr(config.Config.RPCRegisterName.MicroCleanAuthName, auth.StartAuthServer); err != nil {
+	if err := authCmd.StartSvr(config.Config.RPCRegisterName.MicroCleanAuthName, rpcserver.StartAuthServer); err != nil {
 		panic(err.Error())
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"project/common"
+	"project/config"
 	"project/internal/auth/entity"
 	"project/internal/auth/repository/postgre"
 	"project/internal/auth/usecase"
@@ -12,7 +13,6 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc"
-	"gorm.io/gorm"
 )
 
 type AuthUsecase interface {
@@ -32,9 +32,11 @@ type authServer struct {
 // 	}
 // }
 
-func StartAuthServer(ctx context.Context, db *gorm.DB, server *grpc.Server) {
+func StartAuthServer(ctx context.Context, server *grpc.Server) {
 
 	// business := usecase.NewAuthUsecase()
+
+	db := config.SetupDatabase()
 
 	jwtComp := common.NewJWT("jwt")
 
