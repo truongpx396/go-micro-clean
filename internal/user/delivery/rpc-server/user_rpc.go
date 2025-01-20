@@ -4,24 +4,42 @@ import (
 	"context"
 	"encoding/json"
 	"go-micro-clean/common"
+	"go-micro-clean/config"
 	"go-micro-clean/internal/user/entity"
+	"go-micro-clean/internal/user/repository/postgre"
+	"go-micro-clean/internal/user/usecase"
 
 	"go-micro-clean/proto/user"
 
 	"github.com/btcsuite/btcutil/base58"
+	"google.golang.org/grpc"
 )
 
-type UserStore interface {
+type UserUsecase interface {
 	GetUsers(ctx context.Context, ids []int) ([]entity.SimpleUser, error)
 	FindUser(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*entity.User, error)
 	CreateUser(ctx context.Context, data *entity.UserCreation) error
 }
+
 type grpcService struct {
-	dbStore UserStore
+	userBiz UserUsecase
 }
 
-func NewGRPCSerivce(dbStore UserStore) *grpcService {
-	return &grpcService{dbStore: dbStore}
+func NewGRPCSerivce(userBiz UserUsecase) *grpcService {
+	return &grpcService{userBiz: userBiz}
+}
+
+func StartUserServer(ctx context.Context, server *grpc.Server) error {
+
+	db := config.SetupDatabase()
+
+	userRepo := postgre.NewPostgreRepository(db)
+
+	business := usecase.NewBusiness(userRepo)
+
+	userService := &grpcService{business}
+	user.RegisterUserServiceServer(server, userService)
+	return nil
 }
 
 func (s *grpcService) GetUserById(context.Context, *user.GetUserByIdReq) (*user.PublicUserInfoResp, error) {
@@ -31,7 +49,7 @@ func (s *grpcService) GetUserById(context.Context, *user.GetUserByIdReq) (*user.
 func (s *grpcService) CreateUser(ctx context.Context, req *user.CreateUserReq) (*user.NewUserIdResp, error) {
 	newUserData := entity.NewUserForCreation(req.FirstName, req.LastName, req.Email, req.Avatar)
 
-	if err := s.dbStore.CreateUser(ctx, &newUserData); err != nil {
+	if err := s.userBiz.CreateUser(ctx, &newUserData); err != nil {
 		return nil, common.ErrInternal(err)
 	}
 
@@ -45,7 +63,7 @@ func (s *grpcService) GetUsersByIds(ctx context.Context, request *user.GetUsersB
 		userIds[i] = int(request.GetIds()[i])
 	}
 
-	rs, err := s.dbStore.GetUsers(ctx, userIds)
+	rs, err := s.userBiz.GetUsers(ctx, userIds)
 
 	if err != nil {
 		return nil, err

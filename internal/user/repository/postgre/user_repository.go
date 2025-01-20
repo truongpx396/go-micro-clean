@@ -6,6 +6,6 @@ type userRepository struct {
 	db *gorm.DB
 }
 
-func NewMySQLRepository(db *gorm.DB) *userRepository {
+func NewPostgreRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db: db}
 }
