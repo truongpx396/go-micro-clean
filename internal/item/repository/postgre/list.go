@@ -1,8 +1,8 @@
 package postgre
 
 import (
-	"project/common"
-	"project/internal/item/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/item/entity"
 
 	"gorm.io/gorm"
 )

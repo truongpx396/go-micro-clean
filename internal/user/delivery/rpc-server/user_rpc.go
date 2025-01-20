@@ -3,10 +3,10 @@ package rpcserver
 import (
 	"context"
 	"encoding/json"
-	"project/common"
-	"project/internal/user/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/user/entity"
 
-	"project/proto/user"
+	"go-micro-clean/proto/user"
 
 	"github.com/btcsuite/btcutil/base58"
 )

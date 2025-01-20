@@ -4,21 +4,20 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"project/common/cmd"
-	"project/common/config"
-	"project/internal/api"
+	"go-micro-clean/common/cmd"
+	"go-micro-clean/common/config"
+	"go-micro-clean/internal/api"
 	"strconv"
 
 	_ "net/http/pprof"
 
-	"project/tools/log"
+	"go-micro-clean/tools/log"
 )
 
 //swag init --parseInternal --pd --dir cmd/openim-api,internal/api/ -g ../../internal/api/route.go --output cmd/openim-api/docs
 
 func main() {
 	apiCmd := cmd.NewApiCmd()
-	apiCmd.AddPortFlag()
 	apiCmd.AddApi(run)
 	if err := apiCmd.Execute(); err != nil {
 		panic(err.Error())

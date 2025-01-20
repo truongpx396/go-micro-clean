@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"project/common"
+	"go-micro-clean/common"
 
 	"github.com/golang-jwt/jwt/v5"
 )

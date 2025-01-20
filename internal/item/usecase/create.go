@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"errors"
-	"project/internal/item/entity"
+	"go-micro-clean/internal/item/entity"
 )
 
 // CreateItem creates a new item with validation and uniqueness check.

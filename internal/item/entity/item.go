@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"project/common"
+	"go-micro-clean/common"
 )
 
 // Item represents the Item model.

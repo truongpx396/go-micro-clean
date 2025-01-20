@@ -1,10 +1,10 @@
 package main
 
 import (
-	"project/config"
-	"project/routes"
+	"go-micro-clean/config"
+	"go-micro-clean/routes"
 
-	_ "project/docs" // Swaggo docs
+	_ "go-micro-clean/docs" // Swaggo docs
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -13,7 +13,7 @@ import (
 
 // @title           Project API
 // @version         1.0
-// @description     This is a sample server for a project.
+// @description     This is a sample server for a go-micro-clean.
 // @termsOfService  http://example.com/terms/
 
 // @contact.name   API Support

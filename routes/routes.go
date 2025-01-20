@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"project/composers"
+	"go-micro-clean/composers"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

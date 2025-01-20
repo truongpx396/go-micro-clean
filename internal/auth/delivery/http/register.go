@@ -2,8 +2,8 @@ package http
 
 import (
 	"net/http"
-	"project/common"
-	"project/internal/auth/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/auth/entity"
 
 	"github.com/gin-gonic/gin"
 )

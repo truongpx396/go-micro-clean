@@ -1,9 +1,9 @@
 package api
 
 import (
-	"project/pkg/rpcclient"
-	"project/proto/auth"
-	"project/tools/a2r"
+	"go-micro-clean/pkg/rpcclient"
+	"go-micro-clean/proto/auth"
+	"go-micro-clean/tools/a2r"
 
 	"github.com/gin-gonic/gin"
 )

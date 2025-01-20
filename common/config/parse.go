@@ -17,6 +17,13 @@ const (
 
 var Version string
 
+const (
+	UserName = "user"
+	ItemName = "item"
+	AuthName = "auth"
+	PushName = "push"
+)
+
 func LoadConfig(configName, configFolderPath string) error {
 
 	if configFolderPath == "" {

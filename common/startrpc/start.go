@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"project/common/config"
+	"go-micro-clean/common/config"
 	"strconv"
 
 	"google.golang.org/grpc"
 )
 
 func Start(
-	rpcPort int,
 	rpcRegisterName string,
+	rpcPort int,
 	prometheusPort int,
 	rpcFn func(ctx context.Context, server *grpc.Server) error,
 	options ...grpc.ServerOption,
@@ -24,7 +24,7 @@ func Start(
 		rpcPort,
 		"prometheusPort:",
 		prometheusPort,
-		", OpenIM version: ",
+		", MicroClean version: ",
 		config.Version,
 	)
 	listener, err := net.Listen(
@@ -60,9 +60,6 @@ func Start(
 		return err
 	}
 
-	if err != nil {
-		return err
-	}
 	go func() {
 		if config.Config.Prometheus.Enable && prometheusPort != 0 {
 			// prome.Enable = true

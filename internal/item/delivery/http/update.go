@@ -2,8 +2,8 @@ package http
 
 import (
 	"net/http"
-	"project/common"
-	"project/internal/item/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/item/entity"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

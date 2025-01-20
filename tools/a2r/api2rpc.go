@@ -17,8 +17,8 @@ package a2r
 import (
 	"context"
 	"net/http"
-	"project/tools/checker"
-	"project/tools/log"
+	"go-micro-clean/tools/checker"
+	"go-micro-clean/tools/log"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"

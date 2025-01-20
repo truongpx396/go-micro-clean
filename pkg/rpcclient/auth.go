@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"project/proto/auth"
+	"go-micro-clean/proto/auth"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

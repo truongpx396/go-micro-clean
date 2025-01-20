@@ -2,8 +2,8 @@ package usecase
 
 // import (
 // 	"errors"
-// 	"project/modules/item/domain/enums"
-// 	"project/modules/item/domain/models"
+// 	"go-micro-clean/modules/item/domain/enums"
+// 	"go-micro-clean/modules/item/domain/models"
 // 	"testing"
 // 	"time"
 

@@ -2,7 +2,7 @@ package entity
 
 import (
 	"encoding/json"
-	"project/common"
+	"go-micro-clean/common"
 
 	"github.com/btcsuite/btcutil/base58"
 )

@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
-	"project/common"
-	"project/internal/user/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/user/entity"
 )
 
 func (biz *userUsecase) GetUserProfile(ctx context.Context, requesterId int) (*entity.User, error) {

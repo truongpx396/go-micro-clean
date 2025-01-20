@@ -2,9 +2,9 @@ package api
 
 import (
 	"context"
-	"project/common/config"
-	"project/pkg/rpcclient"
-	"project/tools/log"
+	"go-micro-clean/common/config"
+	"go-micro-clean/pkg/rpcclient"
+	"go-micro-clean/tools/log"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"

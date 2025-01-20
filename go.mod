@@ -1,10 +1,9 @@
-module project
+module go-micro-clean
 
 go 1.22.7
 
 require (
 	github.com/btcsuite/btcutil v1.0.2
-	golang.org/x/text v0.21.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
@@ -13,8 +12,9 @@ require (
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.4
-	google.golang.org/grpc v1.69.2
 	go.uber.org/zap v1.27.0
+	golang.org/x/text v0.21.0
+	google.golang.org/grpc v1.69.2
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12

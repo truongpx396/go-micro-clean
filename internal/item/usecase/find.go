@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"errors"
-	"project/internal/item/entity"
+	"go-micro-clean/internal/item/entity"
 )
 
 // GetItemByID retrieves an item by its ID with additional error handling.

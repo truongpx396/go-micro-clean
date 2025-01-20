@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"project/internal/auth/entity"
+	"go-micro-clean/internal/auth/entity"
 )
 
 type AuthUsecase interface {

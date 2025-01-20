@@ -2,16 +2,16 @@ package composers
 
 import (
 	"context"
-	"project/common"
+	"go-micro-clean/common"
 
-	authApi "project/internal/auth/delivery/http"
-	authRepo "project/internal/auth/repository/postgre"
-	authUserRpc "project/internal/auth/repository/rpc-client"
-	authUsecase "project/internal/auth/usecase"
+	authApi "go-micro-clean/internal/auth/delivery/http"
+	authRepo "go-micro-clean/internal/auth/repository/postgre"
+	authUserRpc "go-micro-clean/internal/auth/repository/rpc-client"
+	authUsecase "go-micro-clean/internal/auth/usecase"
 
-	itemApi "project/internal/item/delivery/http"
-	itemRepo "project/internal/item/repository/postgre"
-	itemUsecase "project/internal/item/usecase"
+	itemApi "go-micro-clean/internal/item/delivery/http"
+	itemRepo "go-micro-clean/internal/item/repository/postgre"
+	itemUsecase "go-micro-clean/internal/item/usecase"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

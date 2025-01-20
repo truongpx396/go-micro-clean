@@ -1,8 +1,8 @@
 package entity
 
 import (
-	"project/common"
-	"project/proto/auth"
+	"go-micro-clean/common"
+	"go-micro-clean/proto/auth"
 	"strings"
 )
 

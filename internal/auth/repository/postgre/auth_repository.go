@@ -2,8 +2,8 @@ package postgre
 
 import (
 	"context"
-	"project/common"
-	"project/internal/auth/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/auth/entity"
 
 	"gorm.io/gorm"
 )

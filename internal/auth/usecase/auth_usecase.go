@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"project/internal/auth/entity"
+	"go-micro-clean/internal/auth/entity"
 
 	"github.com/golang-jwt/jwt/v5"
 )

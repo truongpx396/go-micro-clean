@@ -2,7 +2,7 @@ package entity
 
 import (
 	"errors"
-	"project/common"
+	"go-micro-clean/common"
 )
 
 var (

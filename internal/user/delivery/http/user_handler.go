@@ -3,8 +3,8 @@ package http
 import (
 	"context"
 	"net/http"
-	"project/common"
-	"project/internal/user/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/user/entity"
 
 	"github.com/gin-gonic/gin"
 )

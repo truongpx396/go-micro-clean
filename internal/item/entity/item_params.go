@@ -1,6 +1,6 @@
 package entity
 
-import "project/common"
+import "go-micro-clean/common"
 
 // ItemCreate represents the request payload for creating an item.
 type ItemCreate struct {

@@ -1,8 +1,8 @@
 package http
 
 import (
-	"project/common"
-	"project/internal/item/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/item/entity"
 )
 
 type ItemUsecase interface {

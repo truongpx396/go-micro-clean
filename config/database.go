@@ -2,7 +2,7 @@ package config
 
 import (
 	"log"
-	"project/internal/item/entity"
+	"go-micro-clean/internal/item/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

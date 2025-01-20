@@ -3,13 +3,13 @@ package rpcserver
 import (
 	"context"
 
-	"project/common"
-	"project/config"
-	"project/internal/auth/entity"
-	"project/internal/auth/repository/postgre"
-	"project/internal/auth/usecase"
-	"project/pkg/rpcclient"
-	"project/proto/auth"
+	"go-micro-clean/common"
+	"go-micro-clean/config"
+	"go-micro-clean/internal/auth/entity"
+	"go-micro-clean/internal/auth/repository/postgre"
+	"go-micro-clean/internal/auth/usecase"
+	"go-micro-clean/pkg/rpcclient"
+	"go-micro-clean/proto/auth"
 
 	"github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc"
@@ -23,18 +23,9 @@ type AuthUsecase interface {
 
 type authServer struct {
 	business AuthUsecase
-	// userRpcClient *rpcclient.UserRpcClient
 }
 
-// func NewAuthServer(business AuthUsecase, userRpcClient *rpcclient.UserRpcClient) *authServer {
-// 	return &authServer{
-// 		business:      business,
-// 	}
-// }
-
-func StartAuthServer(ctx context.Context, server *grpc.Server) {
-
-	// business := usecase.NewAuthUsecase()
+func StartAuthServer(ctx context.Context, server *grpc.Server) error {
 
 	db := config.SetupDatabase()
 
@@ -48,6 +39,7 @@ func StartAuthServer(ctx context.Context, server *grpc.Server) {
 
 	authService := &authServer{business}
 	auth.RegisterAuthServiceServer(server, authService)
+	return nil
 }
 
 func (s *authServer) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginResponse, error) {

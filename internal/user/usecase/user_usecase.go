@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"project/internal/user/entity"
+	"go-micro-clean/internal/user/entity"
 )
 
 type UserRepository interface {

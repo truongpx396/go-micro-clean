@@ -2,7 +2,7 @@ package rpcclient
 
 import (
 	"context"
-	"project/proto/user"
+	"go-micro-clean/proto/user"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

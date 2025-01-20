@@ -503,7 +503,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Project API",
-	Description:      "This is a sample server for a project.",
+	Description:      "This is a sample server for a go-micro-clean.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -3,7 +3,7 @@ package composers
 import (
 	"context"
 	"log"
-	pb "project/proto/gen"
+	pb "go-micro-clean/proto/gen"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

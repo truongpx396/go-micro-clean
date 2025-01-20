@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 	"encoding/json"
-	"project/common"
-	"project/internal/auth/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/auth/entity"
 
 	"github.com/btcsuite/btcutil/base58"
 )

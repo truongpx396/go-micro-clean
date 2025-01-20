@@ -2,8 +2,8 @@ package postgre
 
 import (
 	"context"
-	"project/common"
-	"project/internal/user/entity"
+	"go-micro-clean/common"
+	"go-micro-clean/internal/user/entity"
 )
 
 func (s *userRepository) CreateUser(ctx context.Context, data *entity.UserCreation) error {
