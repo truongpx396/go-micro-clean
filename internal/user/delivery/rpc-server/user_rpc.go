@@ -15,18 +15,18 @@ import (
 	"google.golang.org/grpc"
 )
 
-type UserUsecase interface {
+type userUsecase interface {
 	GetUsers(ctx context.Context, ids []int) ([]entity.SimpleUser, error)
 	FindUser(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*entity.User, error)
 	CreateUser(ctx context.Context, data *entity.UserCreation) error
 }
 
-type grpcService struct {
-	userBiz UserUsecase
+type userServer struct {
+	userBiz userUsecase
 }
 
-func NewGRPCSerivce(userBiz UserUsecase) *grpcService {
-	return &grpcService{userBiz: userBiz}
+func NewGRPCSerivce(userBiz userUsecase) *userServer {
+	return &userServer{userBiz: userBiz}
 }
 
 func StartUserServer(ctx context.Context, server *grpc.Server) error {
@@ -37,16 +37,16 @@ func StartUserServer(ctx context.Context, server *grpc.Server) error {
 
 	business := usecase.NewBusiness(userRepo)
 
-	userService := &grpcService{business}
+	userService := &userServer{business}
 	user.RegisterUserServiceServer(server, userService)
 	return nil
 }
 
-func (s *grpcService) GetUserById(context.Context, *user.GetUserByIdReq) (*user.PublicUserInfoResp, error) {
+func (s *userServer) GetUserById(context.Context, *user.GetUserByIdReq) (*user.PublicUserInfoResp, error) {
 	return nil, nil
 }
 
-func (s *grpcService) CreateUser(ctx context.Context, req *user.CreateUserReq) (*user.NewUserIdResp, error) {
+func (s *userServer) CreateUser(ctx context.Context, req *user.CreateUserReq) (*user.NewUserIdResp, error) {
 	newUserData := entity.NewUserForCreation(req.FirstName, req.LastName, req.Email, req.Avatar)
 
 	if err := s.userBiz.CreateUser(ctx, &newUserData); err != nil {
@@ -56,7 +56,7 @@ func (s *grpcService) CreateUser(ctx context.Context, req *user.CreateUserReq) (
 	return &user.NewUserIdResp{Id: int32(newUserData.ID)}, nil
 }
 
-func (s *grpcService) GetUsersByIds(ctx context.Context, request *user.GetUsersByIdsReq) (*user.PublicUsersInfoResp, error) {
+func (s *userServer) GetUsersByIds(ctx context.Context, request *user.GetUsersByIdsReq) (*user.PublicUsersInfoResp, error) {
 	userIds := make([]int, len(request.GetIds()))
 
 	for i := range userIds {

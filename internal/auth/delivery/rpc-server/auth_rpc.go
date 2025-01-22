@@ -15,14 +15,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-type AuthUsecase interface {
+type authUsecase interface {
 	Login(ctx context.Context, data *entity.AuthEmailPassword) (*entity.TokenResponse, error)
 	Register(ctx context.Context, data *entity.AuthRegister) error
 	IntrospectToken(ctx context.Context, accessToken string) (*jwt.RegisteredClaims, error)
 }
 
 type authServer struct {
-	business AuthUsecase
+	business authUsecase
 }
 
 func StartAuthServer(ctx context.Context, server *grpc.Server) error {
