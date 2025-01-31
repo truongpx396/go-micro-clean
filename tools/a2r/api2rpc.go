@@ -16,9 +16,10 @@ package a2r
 
 import (
 	"context"
-	"net/http"
+	"go-micro-clean/common"
 	"go-micro-clean/tools/checker"
 	"go-micro-clean/tools/log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
@@ -32,18 +33,21 @@ func Call[A, B, C any](
 	var req A
 	if err := c.BindJSON(&req); err != nil {
 		log.Error("gin bind json error", err, "req", req)
-		c.JSON(http.StatusBadRequest, err)
+		// c.JSON(http.StatusBadRequest, err)
+		common.WriteErrorResponse(c, common.ErrInvalidRequest(err))
 		// apiresp.GinError(c, errs.ErrArgs.WithDetail(err.Error()).Wrap()) // 参数错误
 		return
 	}
 	if err := checker.Validate(&req); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		// c.JSON(http.StatusBadRequest, err)
+		common.WriteErrorResponse(c, common.ErrInvalidRequest(err))
 		// apiresp.GinError(c, err) // 参数校验失败
 		return
 	}
 	data, err := rpc(client, c, &req)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		// c.JSON(http.StatusInternalServerError, err)
+		common.WriteErrorResponse(c, common.ErrInternal(err))
 		// apiresp.GinError(c, err) // RPC调用失败
 		return
 	}

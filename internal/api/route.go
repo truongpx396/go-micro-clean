@@ -11,9 +11,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title open-IM-Server API
+// @title go-micro-clean API
 // @version 1.0
-// @description  Open-IM-Server API server document, all requests in the document have an OperationId field for link tracking
+// @description  go-micro-clean API server document
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
