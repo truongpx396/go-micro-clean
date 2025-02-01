@@ -1,0 +1,176 @@
+basePath: /
+definitions:
+  auth.IntrospectReq:
+    properties:
+      access_token:
+        type: string
+    type: object
+  auth.IntrospectResp:
+    properties:
+      sub:
+        type: string
+      tid:
+        type: string
+    type: object
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      expired_in:
+        type: integer
+    type: object
+  auth.RegisterRequest:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.RegisterResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  common.AppError:
+    properties:
+      code:
+        type: string
+      details:
+        type: string
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+host: localhost:10002
+info:
+  contact: {}
+  description: go-micro-clean API server document
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: go-micro-clean API
+  version: "1.0"
+paths:
+  /auth/introspect_token:
+    post:
+      consumes:
+      - application/json
+      description: Introspect the given token
+      parameters:
+      - description: OperationId
+        in: header
+        name: OperationId
+        required: true
+        type: string
+      - description: Token introspection request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/auth.IntrospectReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.IntrospectResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      summary: Introspect token
+      tags:
+      - Authentication
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Loggin User By UserName and Password
+      parameters:
+      - description: Email and Password
+        in: body
+        name: UserInfo
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.AppError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      summary: Authenticate User
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User registration data
+        in: body
+        name: RegisterData
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      summary: Register New User
+      tags:
+      - Authentication
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    description: Description for what is this security definition being used
+    in: header
+    name: token
+    type: apiKey
+swagger: "2.0"

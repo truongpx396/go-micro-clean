@@ -3,13 +3,15 @@ package main
 import (
 	"context"
 	"fmt"
-	"net"
 	"go-micro-clean/common/cmd"
 	"go-micro-clean/common/config"
 	"go-micro-clean/internal/api"
+	"net"
 	"strconv"
 
 	_ "net/http/pprof"
+
+	_ "go-micro-clean/cmd/api/docs"
 
 	"go-micro-clean/tools/log"
 )
@@ -66,7 +68,7 @@ func run(port int) error {
 	}
 
 	// fmt.Println("start api server, address: ", address, ", OpenIM version: ", config.Config.Version)
-	log.Info("start server success", "address", address, "version", config.Version)
+	log.Info1("start server success", "address", address, "version", config.Version)
 	err := router.Run(address)
 	if err != nil {
 		log.Error("api run failed ", err, "address", address)

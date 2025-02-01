@@ -85,19 +85,19 @@ rpcRegisterName:
 # Log configuration
 #
 # Storage directory
-# Log rotation time
-# Maximum number of logs to retain
+# Log rotation size MB
+# Maximum number of days to retain logs file
 # Log level, 6 means all levels
 # Whether to output to stdout
 # Whether to output in json format
 # Whether to include stack trace in logs
 log:
-  storageLocation: ../../logs/
-  rotationTime: 24
+  storageLocation: ./logs
+  rotationSize: 50
   remainRotationCount: 2
   remainLogLevel: 6
   isStdout: false
-  isJson: false
+  isJson: true
   withStack: false
 
 push:

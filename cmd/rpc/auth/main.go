@@ -1,4 +1,4 @@
-package auth
+package main
 
 import (
 	"go-micro-clean/common/cmd"

@@ -17,7 +17,7 @@ type Auth struct {
 
 func NewAuth(ctx context.Context) *Auth {
 	// conn, err := discov.GetConn(context.Background(), config.Config.RpcRegisterName.OpenImAuthName)
-	conn, err := grpc.NewClient(":50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(":10160", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
 		log.Fatalf("Could not connect: %v", err)

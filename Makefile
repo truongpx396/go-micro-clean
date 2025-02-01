@@ -3,7 +3,10 @@ AUTH_PROTO_FILE := auth.proto
 USER_PROTO_FILE := user.proto
 GEN_DIR := .
 
-.PHONY: all proto auth_proto user_proto
+DB_URL := postgres://dev-user:dev-password@localhost:25432/dev_database?sslmode=disable
+MIGRATIONS_DIR := ./migrations
+
+.PHONY: all proto auth_proto user_proto migrate
 
 all: proto
 
@@ -17,3 +20,6 @@ user_proto: $(GEN_DIR)
 
 $(GEN_DIR):
 	mkdir -p $(GEN_DIR)
+
+migrate:
+	migrate -path $(MIGRATIONS_DIR) -database "$(DB_URL)" up

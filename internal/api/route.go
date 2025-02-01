@@ -5,11 +5,15 @@ import (
 	"go-micro-clean/common/config"
 	"go-micro-clean/pkg/rpcclient"
 	"go-micro-clean/tools/log"
+	"go-micro-clean/tools/mw"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// swag init -g cmd/main.go -o docs
+// swag init --parseInternal --pd --dir cmd/api,internal/api/ -g ../../internal/api/route.go --output cmd/api/docs
 
 // @title go-micro-clean API
 // @version 1.0
@@ -37,7 +41,10 @@ func NewGinRouter(ctx context.Context) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 
-	log.Info("load config", "config", config.Config)
+	// Use CORS middleware
+	r.Use(gin.Recovery(), mw.CorsHandler())
+
+	log.Info1("load config", "config", config.Config)
 	// r.Use(gin.Recovery(), mw.CorsHandler(), mw.GinParseOperationID())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -51,7 +58,7 @@ func NewGinRouter(ctx context.Context) *gin.Engine {
 	{
 		a := NewAuthApi(*authRpc)
 		authRouterGroup.POST("/login", a.Login)
-		authRouterGroup.POST("/regisger", a.RegisterUser)
+		authRouterGroup.POST("/register", a.RegisterUser)
 		authRouterGroup.POST("/intropect_token", ParseToken, a.IntrospectToken)
 	}
 

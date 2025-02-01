@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"go-micro-clean/common"
 	"go-micro-clean/internal/auth/entity"
 
@@ -31,7 +32,7 @@ func (biz *authUsecase) Register(ctx context.Context, data *entity.AuthRegister)
 	newUserId, err := biz.userRepository.CreateUser(ctx, data.FirstName, data.LastName, data.Email, avatarData)
 
 	if err != nil {
-		return common.ErrInternalWithMsg(err, entity.ErrCannotRegister.Error())
+		return common.ErrInternalWithMsg(fmt.Errorf("[userRpc error] %v", err), entity.ErrCannotRegister.Error())
 	}
 
 	salt, err := biz.hasher.RandomStr(16)

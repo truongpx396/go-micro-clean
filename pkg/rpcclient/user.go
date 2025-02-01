@@ -25,7 +25,7 @@ func (u *User) CreateUser(ctx context.Context, firstName string, lastName string
 
 // NewUser initializes and returns a User instance based on the provided service discovery registry.
 func NewUser(ctx context.Context) *User {
-	conn, err := grpc.NewClient(":50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(":10111", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}

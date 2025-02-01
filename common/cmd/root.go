@@ -51,7 +51,7 @@ func NewRootCmd(name string, opts ...func(*CmdOpts)) (rootCmd *RootCmd) {
 				cmdOpts.loggerPrefixName = "MicroClean.log.all"
 			}
 
-			log.NewLogger(cmdOpts.loggerPrefixName, config.Config.Log.RotationTime, config.Config.Log.RemainRotationCount)
+			log.NewLogger(cmdOpts.loggerPrefixName, config.Config.Log.StorageLocation, config.Config.Log.RotationSize, config.Config.Log.RemainRotationCount, config.Config.Log.IsJson, config.Config.Log.WithStack)
 			log.Info(fmt.Sprintf("service %s started", name))
 
 			return nil

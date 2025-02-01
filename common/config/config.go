@@ -47,7 +47,7 @@ type configStruct struct {
 	} `yaml:"rpcRegisterName"`
 	Log struct {
 		StorageLocation     string `yaml:"storageLocation"`
-		RotationTime        int    `yaml:"rotationTime"`
+		RotationSize        int    `yaml:"rotationSize"`
 		RemainRotationCount int    `yaml:"remainRotationCount"`
 		RemainLogLevel      int    `yaml:"remainLogLevel"`
 		IsStdout            bool   `yaml:"isStdout"`
