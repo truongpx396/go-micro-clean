@@ -1,22 +1,13 @@
 package composers
 
-import (
-	"context"
-	"log"
-	pb "go-micro-clean/proto/gen"
+// func composeUserRPCClient(serviceCtx context.Context) pb.UserServiceClient {
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-)
+// 	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
+// 	clientConn, err := grpc.NewClient("", opts)
 
-func composeUserRPCClient(serviceCtx context.Context) pb.UserServiceClient {
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
-	clientConn, err := grpc.NewClient("", opts)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return pb.NewUserServiceClient(clientConn)
-}
+// 	return pb.NewUserServiceClient(clientConn)
+// }

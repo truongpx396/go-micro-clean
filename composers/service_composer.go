@@ -1,14 +1,6 @@
 package composers
 
 import (
-	"context"
-	"go-micro-clean/common"
-
-	authApi "go-micro-clean/internal/auth/delivery/http"
-	authRepo "go-micro-clean/internal/auth/repository/postgre"
-	authUserRpc "go-micro-clean/internal/auth/repository/rpc-client"
-	authUsecase "go-micro-clean/internal/auth/usecase"
-
 	itemApi "go-micro-clean/internal/item/delivery/http"
 	itemRepo "go-micro-clean/internal/item/repository/postgre"
 	itemUsecase "go-micro-clean/internal/item/usecase"
@@ -22,18 +14,18 @@ type AuthService interface {
 	RegisterHdl() func(*gin.Context)
 }
 
-func ComposeAuthAPIService(ctx context.Context, db *gorm.DB) AuthService {
-	jwtComp := common.NewJWT("jwt")
+// func ComposeAuthAPIService(ctx context.Context, db *gorm.DB) AuthService {
+// 	jwtComp := common.NewJWT("jwt")
 
-	authRepo := authRepo.NewPostgreRepository(db)
-	hasher := new(common.Hasher)
+// 	authRepo := authRepo.NewPostgreRepository(db)
+// 	hasher := new(common.Hasher)
 
-	userRepo := authUserRpc.NewClient(composeUserRPCClient(ctx))
-	biz := authUsecase.NewAuthUsecase(authRepo, userRepo, jwtComp, hasher)
-	serviceAPI := authApi.NewAuthHandler(ctx, biz)
+// 	userRepo := authUserRpc.NewClient(composeUserRPCClient(ctx))
+// 	biz := authUsecase.NewAuthUsecase(authRepo, userRepo, jwtComp, hasher)
+// 	serviceAPI := authApi.NewAuthHandler(ctx, biz)
 
-	return serviceAPI
-}
+// 	return serviceAPI
+// }
 
 type ItemAPIService interface {
 	CreateItem(c *gin.Context)

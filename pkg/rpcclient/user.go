@@ -15,7 +15,12 @@ type User struct {
 
 // CreateUser implements usecase.UserRpcClient.
 func (u *User) CreateUser(ctx context.Context, firstName string, lastName string, email string, avatar string) (newId int, err error) {
-	panic("unimplemented")
+	//panic("unimplemented")
+	data, err := u.Client.CreateUser(ctx, &user.CreateUserReq{FirstName: firstName, LastName: lastName, Email: email, Avatar: avatar})
+	if err != nil {
+		return -1, err
+	}
+	return int(data.Id), nil
 }
 
 // NewUser initializes and returns a User instance based on the provided service discovery registry.

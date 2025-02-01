@@ -1,8 +1,8 @@
 package config
 
 import (
-	"log"
 	"go-micro-clean/internal/item/entity"
+	"go-micro-clean/tools/log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -13,7 +13,8 @@ func SetupDatabase() *gorm.DB {
 	dsn := "host=localhost user=dev-user password=dev-password dbname=dev_database port=25432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatal("Failed to connect to database", err)
+		//log.Fatalf("Failed to connect to database: %v", err)
 	}
 	return db
 }
@@ -21,6 +22,6 @@ func SetupDatabase() *gorm.DB {
 func RunMigrations(db *gorm.DB) {
 	err := db.AutoMigrate(&entity.Item{})
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Fatal("Failed to migrate database:", err)
 	}
 }

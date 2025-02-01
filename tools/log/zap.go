@@ -2,6 +2,8 @@ package log
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -20,18 +22,35 @@ func NewLogger(processID string, rotationSize int, rotationCount int) {
 	})
 
 	// Set up the core logging configuration
+	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339) // Use RFC3339 format for human-readable timestamps
+	encoderConfig.TimeKey = "time"
+	encoderConfig.CallerKey = "caller"
+	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder // Use short caller format
+
+	// Set up the core logging configuration
 	core := zapcore.NewCore(
-		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()), // Use JSON format for log entries
-		w,                 // Set log writer with rotation settings
-		zapcore.InfoLevel, // Set minimum log level to Info
+		zapcore.NewJSONEncoder(encoderConfig), // Use JSON format for log entries
+		w,                                     // Set log writer with rotation settings
+		zapcore.InfoLevel,                     // Set minimum log level to Info
 	)
 
 	// Return the logger with caller information enabled
-	Logger = zap.New(core, zap.AddCaller())
+	Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 }
 
 func Error(msg string, err error, fields ...interface{}) {
 	Logger.Error(msg, zap.Error(err), zap.Any(" ", fields))
+}
+
+func Fatal(msg string, err error) {
+	Logger.Error(msg, zap.Error(err))
+	log.Fatalf("Fatal error: %s", err)
+}
+
+func Fatal1(msg string, err error, fields ...interface{}) {
+	Logger.Error(msg, zap.Error(err), zap.Any(" ", fields))
+	log.Fatalf("Fatal error: %s", err)
 }
 
 func Warn(msg string, fields ...interface{}) {
