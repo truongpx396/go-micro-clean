@@ -62,7 +62,7 @@ type UserCreation struct {
 	// Password  string        `json:"password" gorm:"column:password;"`
 	LastName  string `json:"last_name" gorm:"column:last_name;"`
 	FirstName string `json:"first_name" gorm:"column:first_name;"`
-	Role      string `json:"-" gorm:"column:roles;"`
+	Role      string `json:"-" gorm:"column:role;"`
 	// Salt      string        `json:"-" gorm:"column:salt;"`
 	Status Status        `json:"-" gorm:"column:status" db:"status"`
 	Avatar *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
