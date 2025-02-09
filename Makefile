@@ -8,7 +8,7 @@ include .env
 DB_URL := postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@localhost:$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=disable
 MIGRATIONS_DIR := ./migrations
 
-.PHONY: all proto auth_proto user_proto migrate_up migrate_down create_migration
+.PHONY: all proto auth_proto user_proto swag migrate_up migrate_down create_migration
 
 all: proto
 
@@ -22,6 +22,9 @@ user_proto: $(GEN_DIR)
 
 $(GEN_DIR):
 	mkdir -p $(GEN_DIR)
+
+swag:
+	swag init --parseInternal --pd --dir cmd/api,internal/api/ -g ../../internal/api/route.go --output cmd/api/docs
 
 migrate_up:
 	migrate -path $(MIGRATIONS_DIR) -database "$(DB_URL)" -verbose up 1
